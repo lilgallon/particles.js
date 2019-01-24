@@ -6,7 +6,9 @@ An easy way to make your website sexy
 ## Description
 
 I made this script to make my website look "modern". I decided to release the script to improve it from time to time. 
-At the moment, the script has a lot of design issues (there are some lines that are useless, some variables that aren't relevant, and so on). I will fix it as soon as possible
+At the moment, the script has a lot of design issues (there are some lines that are useless, some variables that aren't relevant, and so on). I will fix it as soon as possible.
+
+Here is an example (or you can go to this [website](https://n3roo.github.io/)):
 ![Example](git/example.png)
 
 ## How to use it
