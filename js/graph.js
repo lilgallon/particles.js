@@ -1,6 +1,6 @@
 /**
  * GPL-3.0 License
- * Author(s) : N3ROO
+ * Author(s) : Lilian Gallon (N3ROO)
  * Contribute here : https://github.com/N3ROO/Animated-Particles
  */
 
