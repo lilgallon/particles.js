@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
 
@@ -7,18 +7,25 @@
     <title>Animated particles</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css?545" />
 
     <!-- Animated particles scripts -->
-    <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="js/particle.js"></script>
-    <script type="text/javascript" src="js/graph.js"></script>
+    <!--<script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>-->
+    <script type="text/javascript" src="js/particle.js?0112121"></script>
+    <script type="text/javascript" src="js/animatedParticles.js?21212"></script>
 </head>
 <body>
 
     <div id="particles-container">
-        <canvas id="canvas"></canvas>
+        <canvas id="particles-canvas"></canvas>
     </div>
-    
+
+    <script>
+        // self executing function here (compatibility with all browsers)
+        (function() {
+            let animatedParticles = new AnimatedParticles("particles-canvas");
+            animatedParticles.start();
+        })();
+    </script>
 </body>
 </html>
