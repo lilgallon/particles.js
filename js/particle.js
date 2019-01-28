@@ -73,7 +73,7 @@ class Particle{
             brightness = 100 - (this.multiplier * 10);
         }
 
-        context.fillStyle = 'hsl(' + this.color + ', 100%, ' + brightness + '%)';
+        context.fillStyle = 'hsl(' + this.color + ', 100%, ' + brightness + '%, 100%)';
         context.fill();
 
         context.closePath();

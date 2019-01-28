@@ -102,8 +102,10 @@ class AnimatedParticles{
             let speed = AnimatedParticles.random(0.1, 1);
             let direction = Math.random() * Math.PI * 2;
 
+            let color = AnimatedParticles.random(0, 361);
+
             // Now we can create the particle
-            let dot = new Particle(x, y, size, speed, direction, 90);
+            let dot = new Particle(x, y, size, speed, direction, color);
 
             // Add this dot to the particle list
             this.particles.push(dot)
@@ -125,9 +127,8 @@ class AnimatedParticles{
     draw(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for(let index in this.particles){
-            this.particles[index].draw(this.context);
-
-            // Now we need to draw the springs between particles
+            // We need to draw the springs between particles before them otherwise, the springs
+            // will be over and not under the particles
             for(let neighbor_index in this.particles){
                 if(neighbor_index !== index){
                     // Retrieve the distance
@@ -140,10 +141,16 @@ class AnimatedParticles{
                         this.context.strokeStyle = "rgba(255,255,255," + (1 - dist/this.DIST_TOLERANCE) + ")";
                         this.context.moveTo(this.particles[index].x, this.particles[index].y);
                         this.context.lineTo(this.particles[neighbor_index].x, this.particles[neighbor_index].y);
-                        this.context.stroke()
+                        this.context.stroke();
+                        this.context.closePath();
                     }
                 }
             }
+        }
+
+        // We draw it here so the springs are under the particles
+        for(let index in this.particles){
+            this.particles[index].draw(this.context);
         }
     }
 
