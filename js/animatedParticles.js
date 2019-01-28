@@ -77,7 +77,17 @@ class AnimatedParticles{
     init(){
         // We need to retrieve the canvas information
         this.canvas = document.getElementById(this.canvas_id);
+        
+        // Make it visually fill the positioned parent
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = '100%';
+        // ...then set the internal size to match
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+
+        // Now we can get the information
         this.context = this.canvas.getContext("2d");
+
 
         // We need a variable to store all the particles
         this.particles = [];
