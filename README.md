@@ -1,4 +1,4 @@
-# Animated particles
+# particles.js
 ![tag](https://img.shields.io/github/tag/n3roo/nero-engine.svg) ![issues](https://img.shields.io/github/issues/n3roo/nero-engine.svg) ![license](https://img.shields.io/github/license/n3roo/nero-engine.svg)
 
 An easy way to make your website sexy
