@@ -5,12 +5,16 @@
  * Troubleshooting : Instructions are available on the github page.
  */
 
+ /**
+  * It sets up the environment, and handle all the particles.
+  */
 class ParticlesHandler{
 
     /**
-     * It creates a graph is the specified canvas
-     * @param canvas_id id of the canvas where we will draw (no modifications will be done on this canvas. You can even
-     * do something else on it, the particles will be drawn over it)
+     * It creates a graph is the specified canvas.
+     * @param canvas_id id of the canvas where we will draw.
+     *      No modifications will be done on this canvas. You can even
+     *      do something else on it, the particles will be drawn over it.
      */
     constructor(canvas_id){
         this.canvas_id = canvas_id;
@@ -28,7 +32,7 @@ class ParticlesHandler{
     }
 
     /**
-     * Start the graph (or resume it)
+     * Starts the graph (or resume it)
      */
     start(){
         this.running = true;
@@ -37,14 +41,14 @@ class ParticlesHandler{
     }
 
     /**
-     * Stop the graph
+     * Stops the graph.
      */
     stop(){
         this.running = false;
     }
 
     /**
-     * This is the loop function
+     * This is the loop function.
      */
     run(){
         if(this.starting) {
@@ -62,8 +66,8 @@ class ParticlesHandler{
     }
 
     /**
-     *  Tells the browser that we wish to perform an animation and requests that the browser call a specified function
-     *  to update an animation before the next repaint.
+     * Tells the browser that we wish to perform an animation and requests that the browser call a specified function
+     * to update an animation before the next repaint.
      */
     requestRedraw(){
         // We use a workaround to not lose the context (ParticlesHandler)
@@ -72,7 +76,7 @@ class ParticlesHandler{
     }
 
     /**
-     * Used to init all the variables used to run the graph
+     * Used to init all the variables used to run the graph.
      */
     init(){
         // We need to retrieve the canvas information
@@ -94,8 +98,8 @@ class ParticlesHandler{
     }
 
     /**
-     * Used to create particles of given amount
-     * @param amount of particles
+     * Used to create particles of given amount.
+     * @param {number} amount of particles.
      */
     initParticleList(amount){
 
@@ -123,7 +127,7 @@ class ParticlesHandler{
     }
 
     /**
-     * It updates all the particles (positions and springs)
+     * It updates all the particles (positions and springs).
      */
     update(){
         for(let index in this.particles){
@@ -132,7 +136,7 @@ class ParticlesHandler{
     }
 
     /**
-     * It draws all the particles
+     * It draws all the particles.
      */
     draw(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -164,7 +168,12 @@ class ParticlesHandler{
         }
     }
 
+    /**
+     * Called when the mouse is over the canvas.
+     */
     mouseOver(){
+        // We make sure that we apply the multiplier only once, and not
+        // at every tick when the mouse is over.
         if(!this.isMouseOver) {
             for (let index in this.particles) {
                 this.particles[index].setMultiplier(1.5);
@@ -173,7 +182,12 @@ class ParticlesHandler{
         }
     }
 
+    /**
+     * Called when the mouse is out of the canvas.
+     */
     mouseOut(){
+        // We make sure that we apply the multiplier only once, and not
+        // at every tick when the mouse is out.
         if(this.isMouseOver) {
             for (let index in this.particles) {
                 this.particles[index].setMultiplier(1);
@@ -183,25 +197,28 @@ class ParticlesHandler{
     }
 
     /**
-     * Gives a random number between min and max [min; max[
-     * @param min
-     * @param max
+     * Gives a random number between min and max [min; max[.
+     * @param min,
+     * @param max.
      */
     static random(min, max){
         return Math.random() * (max - min) + min;
     }
 }
 
+/**
+ * All the particle properties are in this class.
+ */
 class Particle{
 
     /**
-     * Creates a particle
-     * @param x position on horizontal axis
-     * @param y position on vertical axis
-     * @param size the size of the particle
-     * @param speed the speed obviously
-     * @param direction in radians
-     * @param color hsl color
+     * Creates a particle.
+     * @param {number} x position on horizontal axis,
+     * @param {number} y position on vertical axis,
+     * @param {number} size the size of the particle,
+     * @param {number} speed the speed obviously,
+     * @param {number} direction in radians,
+     * @param {number} color hsl color.
      * @constructor
      */
     constructor(x, y, size, speed, direction, color){
@@ -220,6 +237,11 @@ class Particle{
         return this;
     }
 
+    /**
+     * It moves the particle by taking in account its environment.
+     * @param {number} width in pixels of the environment,
+     * @param {number} height in pixels of the environment.
+     */
     update(width, height){
 
         let multiplier_increment = 0;
@@ -247,6 +269,10 @@ class Particle{
         this.setSpeed(this.getSpeed() - multiplier_increment);
     }
 
+    /**
+     * It draws the particle with all its properties.
+     * @param {canvas 2D context} context used to draw on the canvas.
+     */
     draw(context){
         context.beginPath();
 
@@ -266,20 +292,23 @@ class Particle{
         context.closePath();
     }
 
+    /**
+     * @returns {number} the size of the particle by taking in account the current multiplier.
+     */
     getSize(){
         return this.size * this.multiplier;
     }
 
     /**
-     * @returns {number} : speed of the particle
+     * @returns {number} : speed of the particle.
      */
     getSpeed(){
         return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
     }
 
     /**
-     * Changes the speed of the particle
-     * @param speed new speed
+     * Changes the speed of the particle.
+     * @param {number} speed new speed.
      */
     setSpeed(speed){
         // Set the speed
@@ -289,15 +318,15 @@ class Particle{
     }
 
     /**
-     * @returns {number} : the direction of the particle (radians)
+     * @returns {number} : the direction of the particle (radians).
      */
     getDirection(){
         return Math.atan2(this.vy, this.vx);
     }
 
     /**
-     * Changes the direction of the particle
-     * @param direction new direction (radians)
+     * Changes the direction of the particle.
+     * @param {number} direction new direction (radians).
      */
     setDirection(direction){
         const speed = this.getSpeed();
@@ -305,13 +334,17 @@ class Particle{
         this.vy = Math.sin(direction) * speed;
     }
 
+    /**
+     * Changes the current multiplier of the particle.
+     * @param {number} multiplier (1 = default).
+     */
     setMultiplier(multiplier){
         this.multiplier = multiplier;
     }
 
     /**
-     *
-     * @param particle
+     * Gives the distance between this particle and the given one.
+     * @param {Particle} particle,
      * @returns {number} : distance to the specified particle.
      */
     distanceTo(particle){
