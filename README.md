@@ -35,7 +35,7 @@ Main features :
 </div>
 ```
 
-- Execute the script. Please see the next section to customize the particles background.
+- Execute the script. If you don't know where to put this, put it just before the `</body>` tag.
 ```html
 <script>
     (function() {
