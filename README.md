@@ -47,7 +47,32 @@ Main features :
 
 ## How to customize it
 
-> todo
+To simplify the customization, we use an object written this way:
+```javascript
+let settings = {
+    // Handler settings
+    amount: val, // number of particles
+    tolerance: val, // distance from which lines will be drawn
+    lineWidth: val, // width of the lines between particles
+
+    // Particles settings (random between min and max)
+    size: [min, max], // the size of particle
+    position: [min, max], // position of a particle
+    speed: [min, max], // speed of a particle
+    direction: [min, max], // direction of a particle (in radians)
+    color: [min, max], // color of a particle (HSL color from 0 to 360)
+
+    // Interaction settings (if the mouse goes in or out of the canvas)
+    multiplierIn: value, // multiplier if the mouse is in the canvas
+    multiplierOut: value // multiplier if the mouse is out of the canvas
+}
+```
+
+> TODO: explain the colors
+
+> TODO: explain the multipliers
+
+> TODO: finish documentation
 
 ## Contribution
 
