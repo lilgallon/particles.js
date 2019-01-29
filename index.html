@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css?545" />
 
     <!-- Animated particles scripts -->
-    <script type="text/javascript" src="js/particle.js?0112121"></script>
-    <script type="text/javascript" src="js/animatedParticles.js?21212"></script>
+    <script type="text/javascript" src="js/particles.js?0112121"></script>
 </head>
 <body>
 
@@ -22,8 +21,8 @@
     <script>
         // self executing function here (compatibility with all browsers)
         (function() {
-            let animatedParticles = new AnimatedParticles("particles-canvas");
-            animatedParticles.start();
+            let particlesHandler = new ParticlesHandler("particles-canvas");
+            particlesHandler.start();
         })();
     </script>
 </body>
