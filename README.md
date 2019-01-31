@@ -50,21 +50,33 @@ Main features :
 To simplify the customization, we use an object written this way:
 ```javascript
 let settings = {
-    // Handler settings
-    amount: val, // number of particles
-    tolerance: val, // distance from which lines will be drawn
-    lineWidth: val, // width of the lines between particles
+    // Handler settings (-1 = default)
+    amount: -1, // number of particles
+    tolerance: -1, // distance from which lines will be drawn
+    lineWidth: -1, // width of the lines between particles
 
     // Particles settings (random between min and max)
-    size: [min, max], // the size of particle
-    position: [min, max], // position of a particle
-    speed: [min, max], // speed of a particle
-    direction: [min, max], // direction of a particle (in radians)
-    color: [min, max], // color of a particle (HSL color from 0 to 360)
+        // the size of particle
+    sizeMin: -1,
+    sizeMax: -1,
+    // position of a particle
+    positionXMin: -1,
+    positionXMax: -1,
+    positionYMin: -1,
+    positionYMax: -1,
+    // speed of a particle
+    speedMin: -1,
+    speedMax: -1, 
+    // direction of a particle (in radians)
+    directionMin: -1,
+    directionMax: -1,
+    // color of a particle (HSL color from 0 to 360)
+    colorMin: -1,
+    colorMax: -1,
 
     // Interaction settings (if the mouse goes in or out of the canvas)
-    multiplierIn: value, // multiplier if the mouse is in the canvas
-    multiplierOut: value // multiplier if the mouse is out of the canvas
+    multiplierIn: -1, // multiplier if the mouse is in the canvas
+    multiplierOut: -1 // multiplier if the mouse is out of the canvas
 }
 ```
 

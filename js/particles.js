@@ -15,14 +15,16 @@ class ParticlesHandler{
      * @param canvas_id id of the canvas where we will draw.
      *      No modifications will be done on this canvas. You can even
      *      do something else on it, the particles will be drawn over it.
+     * @param settings all the settings are stored in this variable. Check
+     *      github for details.
      */
-    constructor(canvas_id){
+    constructor(canvas_id, settings){
         this.canvas_id = canvas_id;
         this.running = false;
         this.starting = false;
 
-        this.DIST_TOLERANCE = 150;
-        this.STROKE_WIDTH = 3;
+        // We will need to check the settings juste before starting the loop
+        this.settings = settings;
 
         // Event handling
         this.isMouseOver = false;
@@ -92,9 +94,52 @@ class ParticlesHandler{
         // Now we can get the information
         this.context = this.canvas.getContext("2d");
 
+        this.loadSettings(this.settings);
 
         // We need a variable to store all the particles
         this.particles = [];
+    }
+
+    /**
+     * It verifies and loads the settings.
+     * @param {object} settings variable with all the settings (check github for details)
+     */
+    loadSettings(settings){
+        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 50, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
+
+        this.loadSetting(settings, "sizeMin"     , 2, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "sizeMax"     , 6, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "positionXMin", settings.size + 1, settings.size + 1, this.canvas.width - this.size);
+        this.loadSetting(settings, "positionXMax", this.canvas.width - this.size, settings.size + 1, this.canvas.width - this.size);
+        this.loadSetting(settings, "positionYMin", settings.size + 1, settings.size + 1, this.canvas.height - this.size);
+        this.loadSetting(settings, "positionYMax", this.canvas.height - this.size, settings.size + 1, this.canvas.height - this.size);
+        this.loadSetting(settings, "speedMin"    , 0.1, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "speedMax"    , 1, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "directionMin", 0, 0, Math.PI * 2);
+        this.loadSetting(settings, "directionMin", Math.PI * 2, 0, Math.PI * 2);
+        this.loadSetting(settings, "colorMin"    , 0, 0, 360);
+        this.loadSetting(settings, "colorMax"    , 360, 0,360);
+
+        this.loadSetting(settings, "multiplierIn" , 1.5, 0.001, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "multiplierOut", 1, 0.001, Number.MAX_SAFE_INTEGER);
+
+        this.settings = settings;
+    }
+
+    loadSetting(settings, settingName, defaultValue, minValue, maxValue){
+        if(settings[settingName] === undefined){
+            settings[settingName] = defaultValue;
+        }else if(settings[settingName] === -1){
+            settings[settingName] = defaultValue;
+        }else if(settings[settingName] < minValue){
+            settings[settingName] = minValue;
+        }else if(settings[settingName] > maxValue){
+            settings[settingName] = maxValue
+        }
+        // If none of these statements is reached, it means that the setting is
+        // set correctly
     }
 
     /**
@@ -148,11 +193,11 @@ class ParticlesHandler{
                     // Retrieve the distance
                     let dist = this.particles[index].distanceTo(this.particles[neighbor_index]);
 
-                    if(dist < this.DIST_TOLERANCE){
+                    if(dist < this.settings.tolerance){
                         // Draw the spring
                         this.context.beginPath();
-                        this.context.strokeWidth = this.STROKE_WIDTH;
-                        this.context.strokeStyle = "rgba(255,255,255," + (1 - dist/this.DIST_TOLERANCE) + ")";
+                        this.context.strokeWidth = this.settings.lineWidth;
+                        this.context.strokeStyle = "rgba(255,255,255," + (1 - dist/this.settings.tolerance) + ")";
                         this.context.moveTo(this.particles[index].x, this.particles[index].y);
                         this.context.lineTo(this.particles[neighbor_index].x, this.particles[neighbor_index].y);
                         this.context.stroke();
