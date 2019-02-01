@@ -1,4 +1,4 @@
-# particles.js
+![header](https://n3roo.github.io/img/particles-js.png)
 ![tag](https://img.shields.io/github/tag/n3roo/nero-engine.svg)
 ![size](https://img.shields.io/github/size/:user/:repo/:path.svg)
 ![issues](https://img.shields.io/github/issues/n3roo/nero-engine.svg)
