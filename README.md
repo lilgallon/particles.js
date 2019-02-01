@@ -1,8 +1,7 @@
 ![header](https://n3roo.github.io/img/particles-js.png)
-![tag](https://img.shields.io/github/tag/n3roo/nero-engine.svg)
-![size](https://img.shields.io/github/size/:user/:repo/:path.svg)
-![issues](https://img.shields.io/github/issues/n3roo/nero-engine.svg)
-![license](https://img.shields.io/github/license/n3roo/nero-engine.svg)
+![tag](https://img.shields.io/github/tag/n3roo/particles.js.svg)
+![issues](https://img.shields.io/github/issues/n3roo/particles.js.svg)
+![license](https://img.shields.io/github/license/n3roo/particles.js.svg)
 
 An easy way to make your website sexy with particle backgrounds.
 
