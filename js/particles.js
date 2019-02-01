@@ -135,8 +135,8 @@ class ParticlesHandler{
         this.loadSetting(settings, "positionXMax", this.canvas.width - settings.sizeMax, settings.sizeMax + 1, this.canvas.width - settings.sizeMax - 1);
         this.loadSetting(settings, "positionYMin", settings.sizeMax + 1, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
         this.loadSetting(settings, "positionYMax", this.canvas.height - settings.sizeMax, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
-        this.loadSetting(settings, "speedMin"    , 0.1, 0, Number.MAX_SAFE_INTEGER);
-        this.loadSetting(settings, "speedMax"    , 1, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "speedMin"    , 200, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "speedMax"    , 400, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "directionMin", 0, 0, Math.PI * 2);
         this.loadSetting(settings, "directionMax", Math.PI * 2, 0, Math.PI * 2);
         this.loadSetting(settings, "colorMin"    , 0, 0, 360);
@@ -183,7 +183,7 @@ class ParticlesHandler{
             let color = ParticlesHandler.random(this.settings.colorMin, this.settings.colorMax);
 
             // Now we can create the particle
-            let dot = new Particle(x, y, size, speed, direction, color);
+            let dot = new Particle(x, y, size, speed / 1000, direction, color);
 
             // Add this dot to the particle list
             this.particles.push(dot)
