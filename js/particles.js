@@ -107,20 +107,22 @@ class ParticlesHandler{
      * @param {object} settings variable with all the settings (check github for details)
      */
     loadSettings(settings){
+
         this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 4000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
 
         this.loadSetting(settings, "sizeMin"     , 2, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "sizeMax"     , 6, 0, Number.MAX_SAFE_INTEGER);
-        this.loadSetting(settings, "positionXMin", settings.size + 1, settings.size + 1, this.canvas.width - this.size - 1);
-        this.loadSetting(settings, "positionXMax", this.canvas.width - this.size, settings.size + 1, this.canvas.width - this.size - 1);
-        this.loadSetting(settings, "positionYMin", settings.size + 1, settings.size + 1, this.canvas.height - this.size - 1);
-        this.loadSetting(settings, "positionYMax", this.canvas.height - this.size, settings.size + 1, this.canvas.height - this.size - 1);
+
+        this.loadSetting(settings, "positionXMin", settings.sizeMax + 1, settings.sizeMax + 1, this.canvas.width - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionXMax", this.canvas.width - settings.sizeMax, settings.sizeMax + 1, this.canvas.width - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionYMin", settings.sizeMax + 1, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionYMax", this.canvas.height - settings.sizeMax, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
         this.loadSetting(settings, "speedMin"    , 0.1, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "speedMax"    , 1, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "directionMin", 0, 0, Math.PI * 2);
-        this.loadSetting(settings, "directionMin", Math.PI * 2, 0, Math.PI * 2);
+        this.loadSetting(settings, "directionMax", Math.PI * 2, 0, Math.PI * 2);
         this.loadSetting(settings, "colorMin"    , 0, 0, 360);
         this.loadSetting(settings, "colorMax"    , 360, 0, 360);
 
@@ -135,6 +137,7 @@ class ParticlesHandler{
             settings[settingName] = defaultValue;
         }else if(settings[settingName] === -1){
             settings[settingName] = defaultValue;
+            
         }else if(settings[settingName] < minValue){
             settings[settingName] = minValue;
         }else if(settings[settingName] > maxValue){
