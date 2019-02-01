@@ -31,7 +31,7 @@ Main features :
 ```html
 <!-- Here, the canvas will fit the <div> container -->
 <div>
-<canvas id="canvas-id"></canvas>
+    <canvas id="canvas-id"></canvas>
 </div>
 ```
 
@@ -66,7 +66,7 @@ let settings = {
     tolerance: -1, // distance from which lines will be drawn
     lineWidth: -1, // width of the lines between particles
 
-    // Particles settings (random between min and max)
+    // Particles settings (random between min and max, both included)
     // the size of a particle
     sizeMin: -1,
     sizeMax: -1,
@@ -120,6 +120,7 @@ multiplierOut|The maximum multiplier of a particle (when the mouse is out)
 
 Things to know :
 - **Default value** : If you want the default value, leave "-1" to the setting concerned.
+- **Min max** : A value is taken randomly in [min; max] range (both min and max are included). Put same value as min and max if you don't want a random value.
 - **Multiplier** : It is used to give a "dynamic" look to the particles. You can change the effects when the mouse is in or out of the canvas.
 - **Colors** : Initially, the color of all the particles is white since their luminosity is set to 100%. But further is the multiplier from 1.0, darker the particles are. So the particle colors can be seen when the mouse is over the canvas. This feature will be customizable in the next versions.
 

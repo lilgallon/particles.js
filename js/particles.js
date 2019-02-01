@@ -52,7 +52,7 @@ class ParticlesHandler{
     run(){
         if(this.starting) {
             this.init();
-            this.initParticleList(this.canvas.width / 20);
+            this.initParticleList();
             this.starting = false;
         }
 
@@ -107,22 +107,22 @@ class ParticlesHandler{
      * @param {object} settings variable with all the settings (check github for details)
      */
     loadSettings(settings){
-        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 50, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 4000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
 
         this.loadSetting(settings, "sizeMin"     , 2, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "sizeMax"     , 6, 0, Number.MAX_SAFE_INTEGER);
-        this.loadSetting(settings, "positionXMin", settings.size + 1, settings.size + 1, this.canvas.width - this.size);
-        this.loadSetting(settings, "positionXMax", this.canvas.width - this.size, settings.size + 1, this.canvas.width - this.size);
-        this.loadSetting(settings, "positionYMin", settings.size + 1, settings.size + 1, this.canvas.height - this.size);
-        this.loadSetting(settings, "positionYMax", this.canvas.height - this.size, settings.size + 1, this.canvas.height - this.size);
+        this.loadSetting(settings, "positionXMin", settings.size + 1, settings.size + 1, this.canvas.width - this.size - 1);
+        this.loadSetting(settings, "positionXMax", this.canvas.width - this.size, settings.size + 1, this.canvas.width - this.size - 1);
+        this.loadSetting(settings, "positionYMin", settings.size + 1, settings.size + 1, this.canvas.height - this.size - 1);
+        this.loadSetting(settings, "positionYMax", this.canvas.height - this.size, settings.size + 1, this.canvas.height - this.size - 1);
         this.loadSetting(settings, "speedMin"    , 0.1, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "speedMax"    , 1, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "directionMin", 0, 0, Math.PI * 2);
         this.loadSetting(settings, "directionMin", Math.PI * 2, 0, Math.PI * 2);
         this.loadSetting(settings, "colorMin"    , 0, 0, 360);
-        this.loadSetting(settings, "colorMax"    , 360, 0,360);
+        this.loadSetting(settings, "colorMax"    , 360, 0, 360);
 
         this.loadSetting(settings, "multiplierIn" , 1.5, 0.001, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "multiplierOut", 1, 0.001, Number.MAX_SAFE_INTEGER);
@@ -140,30 +140,28 @@ class ParticlesHandler{
         }else if(settings[settingName] > maxValue){
             settings[settingName] = maxValue
         }
-        // If none of these statements is reached, it means that the setting is
-        // set correctly
+        // If none of these statements is reached, it means that the setting is set correctly
     }
 
     /**
-     * Used to create particles of given amount.
-     * @param {number} amount of particles.
+     * Used to create particles.
      */
-    initParticleList(amount){
+    initParticleList(){
 
-        for(let i = 0; i < amount; i++){
+        for(let i = 0; i < this.settings.amount; i++){
 
             // We create the size first since we will use it to find the positions
-            let size = ParticlesHandler.random(2, 6);
+            let size = ParticlesHandler.random(this.settings.sizeMin, this.settings.sizeMax);
 
             // Position (make sure that it is not out of bounds)
-            let x = ParticlesHandler.random(size + 1, this.canvas.width - size);
-            let y = ParticlesHandler.random(size + 1, this.canvas.height - size);
+            let x = ParticlesHandler.random(this.settings.positionXMin, this.settings.positionXMax);
+            let y = ParticlesHandler.random(this.settings.positionYMin, this.settings.positionYMax);
 
             // Then, we need the velocity vector (speed and direction)
-            let speed = ParticlesHandler.random(0.1, 1);
-            let direction = Math.random() * Math.PI * 2;
+            let speed = ParticlesHandler.random(this.settings.speedMin, this.settings.speedMax);
+            let direction = ParticlesHandler.random(this.settings.directionMin, this.settings.directionMax);
 
-            let color = ParticlesHandler.random(0, 361);
+            let color = ParticlesHandler.random(this.settings.colorMin, this.settings.colorMax);
 
             // Now we can create the particle
             let dot = new Particle(x, y, size, speed, direction, color);
@@ -223,7 +221,7 @@ class ParticlesHandler{
         // at every tick when the mouse is over.
         if(!this.isMouseOver) {
             for (let index in this.particles) {
-                this.particles[index].setMultiplier(1.5);
+                this.particles[index].setMultiplier(this.settings.multiplierIn);
             }
             this.isMouseOver = true;
         }
@@ -237,19 +235,19 @@ class ParticlesHandler{
         // at every tick when the mouse is out.
         if(this.isMouseOver) {
             for (let index in this.particles) {
-                this.particles[index].setMultiplier(1);
+                this.particles[index].setMultiplier(this.settings.multiplierOut);
             }
             this.isMouseOver = false;
         }
     }
 
     /**
-     * Gives a random number between min and max [min; max[.
+     * Gives a random number between min and max [min; max].
      * @param min,
      * @param max.
      */
     static random(min, max){
-        return Math.random() * (max - min) + min;
+        return Math.random() * ((max + 1) - min) + min;
     }
 }
 
