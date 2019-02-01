@@ -47,6 +47,20 @@ class ParticlesHandler{
     }
 
     /**
+     * @param {number} multiplierIn multiplier when the mouse is in the canvas.
+     */
+    setMultiplierIn(multiplierIn){
+        this.settings.multiplierIn = multiplierIn;
+    }
+
+    /**
+     * @param {number} multiplierOut multiplier when the mouse is out of the canvas.
+     */
+    setMultiplierOut(multiplierOut){
+        this.settings.multiplierOut = multiplierOut;
+    }
+
+    /**
      * This is the loop function.
      */
     run(){

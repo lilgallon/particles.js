@@ -49,9 +49,11 @@ Main features :
 
 **Function**|**Description**
 :-----:|:-----:
-ParticlesHandler(canvas-id, settings)|It creates the class attributes
+ParticlesHandler(canvas-id, settings)|It creates the class attributes.
 start()|If first call : it initializes the particles with the settings (if set), and starts the loop. Otherwise it resumes the loop.
-stop()|It stops the loop (all the particles are frozen)
+stop()|It stops the loop (all the particles are frozen).
+setMultiplierIn(multiplierIn)|Change multiplier when the mouse is in the canvas.
+setMultiplierOut(multiplierOut)|Change multiplier when the mouse out of the canvas.
 
 - Go to the [github wiki](https://github.com/N3ROO/particles.js/wiki) for more details.
 
