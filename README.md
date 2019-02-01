@@ -6,18 +6,6 @@
 
 An easy way to make your website sexy with particle backgrounds.
 
-## Important info
-
-The first version is almost completed. Be patient :)
-What is better in the version 1 :
-- Full javascript (no frameworks),
-- Optimized,
-- Code is understandable,
-- New code design (easy to add features)
-- Animated particles are fully customizable,
-- Documentation on how to use it in your own browser
-- An some other stuff :D
-
 ## Description
 
 I made this script to make my website look "modern". I decided to release the script to improve it from time to time.
