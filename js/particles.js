@@ -28,9 +28,6 @@ class ParticlesHandler{
 
         // Event handling
         this.isMouseOver = false;
-        let self = this;
-        document.getElementById(this.canvas_id).addEventListener("mouseover", self.mouseOver.bind(this), false);
-        document.getElementById(this.canvas_id).addEventListener("mouseout", self.mouseOut.bind(this), false);
     }
 
     /**
@@ -81,6 +78,11 @@ class ParticlesHandler{
      * Used to init all the variables used to run the graph.
      */
     init(){
+        // Set up mouse event listeners
+        let self = this;
+        document.getElementById(this.canvas_id).addEventListener("mouseover", self.mouseOver.bind(this), false);
+        document.getElementById(this.canvas_id).addEventListener("mouseout", self.mouseOut.bind(this), false);
+
         // We need to retrieve the canvas information
         this.canvas = document.getElementById(this.canvas_id);
         

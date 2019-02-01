@@ -45,9 +45,20 @@ Main features :
 </script>
 ```
 
+- Here are all the functions that you may use :
+
+**Function**|**Description**
+:-----:|:-----:
+ParticlesHandler(canvas-id, settings)|It creates the class attributes
+start()|If first call : it initializes the particles with the settings (if set), and starts the loop. Otherwise it resumes the loop.
+stop()|It stops the loop (all the particles are frozen)
+
+- Go to the [github wiki](https://github.com/N3ROO/particles.js/wiki) for more details.
+
 ## How to customize it
 
-To simplify the customization, we use an object written this way:
+To simplify the customization, we use an object written this way :
+
 ```javascript
 let settings = {
     // Handler settings (-1 = default)
@@ -56,7 +67,7 @@ let settings = {
     lineWidth: -1, // width of the lines between particles
 
     // Particles settings (random between min and max)
-        // the size of particle
+    // the size of a particle
     sizeMin: -1,
     sizeMax: -1,
     // position of a particle
@@ -77,14 +88,40 @@ let settings = {
     // Interaction settings (if the mouse goes in or out of the canvas)
     multiplierIn: -1, // multiplier if the mouse is in the canvas
     multiplierOut: -1 // multiplier if the mouse is out of the canvas
-}
+};
 ```
 
-> TODO: explain the colors
+Then, add it to the ParticleHandler constructor :
+```javascript
+    let settings = { }; // customize everything in here
+    let particlesHandler = new ParticlesHandler("particles-canvas", settings);
+    particlesHandler.start();
+```
 
-> TODO: explain the multipliers
+**Setting**|**Description**
+:-----:|:-----:
+amount|The amount of particles
+tolerance|Distance from which lines between particles will be drawn (in pixels)
+lineWidth|Width of the lines between particles (in pixels)
+sizeMin|The minimum size of a particle (radius in pixels)
+sizeMax|The maximum size of a particle (radius in pixels)
+positionXMin|The minimum X position for a particle (in pixels)
+positionXMax|The maximum X position for a particle (in pixels)
+positionYMin|The minimum Y position for a particle (in pixels)
+positionYMax|The maximum X position for a particle (in pixels)
+speedMin|The minimum speed of a particle (in pixels per animation request)
+speedMax|The maximum speed of a particle (in pixels per animation request)
+directionMin|The minimum direction of a particle (in radians)
+directionMax|The maximum direction of a particle (in radians)
+colorMin|The minimum color of a particle (HSL color from 0 to 360)
+colorMax|The maximum color of a particle (HSL color from 0 to 360)
+multiplierIn|The minimum multiplier of a particle (when the mouse is over)
+multiplierOut|The maximum multiplier of a particle (when the mouse is out)
 
-> TODO: finish documentation
+Things to know :
+- **Default value** : If you want the default value, leave "-1" to the setting concerned.
+- **Multiplier** : It is used to give a "dynamic" look to the particles. You can change the effects when the mouse is in or out of the canvas.
+- **Colors** : Initially, the color of all the particles is white since their luminosity is set to 100%. But further is the multiplier from 1.0, darker the particles are. So the particle colors can be seen when the mouse is over the canvas. This feature will be customizable in the next versions.
 
 ## Contribution
 
