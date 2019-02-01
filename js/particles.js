@@ -19,14 +19,22 @@ class ParticlesHandler{
      *      do something else on it, the particles will be drawn over it.
      * @param settings all the settings are stored in this variable. Check
      *      github for details.
+     * @param verbose the script writes what is happenning to the console.
      */
-    constructor(canvas_id, settings){
+    constructor(canvas_id, settings, verbose){
         this.canvas_id = canvas_id;
         this.running = false;
         this.starting = false;
 
         // We will need to check the settings juste before starting the loop
         this.settings = settings;
+
+        // Used to troubleshoot
+        if(verbose === undefined){
+            this.verbose = false;
+        }else{
+            this.verbose = verbose;
+        }
 
         // Event handling
         this.isMouseOver = false;
@@ -67,16 +75,31 @@ class ParticlesHandler{
      */
     run(){
         if(this.starting) {
+            if(this.verbose){
+                console.log("First start, we need to init everything.");
+            }
+
             this.init();
             this.initParticleList();
             this.starting = false;
+
+            if(this.verbose && this.running){
+                console.log("Everything is ready.");
+            }else if(this.verbose){
+                console.log("A problem occurred during init.");
+            }
         }
 
-        this.update();
-        this.draw();
-
+        // It could have been cancelled during init if an error occurred
         if(this.running){
+            this.update();
+            this.draw();
+
             this.requestRedraw();
+        }else{
+            if(this.verbose){
+                console.log("Loop stopped.");
+            }
         }
     }
 
@@ -94,20 +117,55 @@ class ParticlesHandler{
      * Used to init all the variables used to run the graph.
      */
     init(){
-        // Set up mouse event listeners
-        let self = this;
-        document.getElementById(this.canvas_id).addEventListener("mouseover", self.mouseOver.bind(this), false);
-        document.getElementById(this.canvas_id).addEventListener("mouseout", self.mouseOut.bind(this), false);
+        if(this.verbose){
+            console.log("particlesHandler initialization.");
+        }
 
         // We need to retrieve the canvas information
         this.canvas = document.getElementById(this.canvas_id);
-        
+        if(this.canvas === null){
+            console.error({
+                error: "The canvas id '" + this.canvas_id + "' was not found.",
+                troubleshooting: "Make sure that it is spelled corretly, and that it does not have the # prefix.",
+                impact: "Cancelling particlesHandler initialization."
+            });
+            this.stop();
+            return;
+        }
+
+        // Set up mouse event listeners
+        let self = this;
+        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
+        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
+
         // Make it visually fill the positioned parent
         this.canvas.style.width = '100%';
         this.canvas.style.height = '100%';
         // ...then set the internal size to match
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
+
+        if(this.canvas.width === 0 || this.canvas.height === 0){
+            let error_msg = "";
+            if(this.canvas.width === 0){
+                error_msg += "The canvas as a width of 0. ";
+            }
+            if(this.canvas.height === 0){
+                error_msg += "The canvas as an height of 0. ";
+            }
+
+            console.error({
+                error: error_msg,
+                troubleshooting: "Make sure that the canvas is in a parent div and that the parent div has a non-null size.",
+                impact: "Cancelling particlesHandler initialization."
+            });
+            this.stop();
+            return;
+        }
+
+        if(this.verbose){
+            console.log("Canvas size (w, h) : (" + this.canvas.width + "," + this.canvas.height + ")");
+        }
 
         // Now we can get the information
         this.context = this.canvas.getContext("2d");
@@ -123,6 +181,35 @@ class ParticlesHandler{
      * @param {object} settings variable with all the settings (check github for details)
      */
     loadSettings(settings){
+        if(this.verbose){
+            console.log("Loading settings.");
+        }
+
+        if(settings === undefined){
+            if(this.verbose){
+                console.log("Settings variable is undefined, we need to create it.");
+            }
+
+            settings = {
+                amount: -1,
+                tolerance: -1,
+                lineWidth: -1,
+                sizeMin: -1,
+                sizeMax: -1,
+                positionXMin: -1,
+                positionXMax: -1,
+                positionYMin: -1,
+                positionYMax: -1,
+                speedMin: -1,
+                speedMax: -1,
+                directionMin: -1,
+                directionMax: -1,
+                colorMin: -1,
+                colorMax: -1,
+                multiplierIn: -1,
+                multiplierOut: -1
+            }
+        };
 
         this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 4000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
@@ -149,15 +236,23 @@ class ParticlesHandler{
     }
 
     loadSetting(settings, settingName, defaultValue, minValue, maxValue){
+        let status;
         if(settings[settingName] === undefined){
             settings[settingName] = defaultValue;
+            status = "undefined";
         }else if(settings[settingName] === -1){
             settings[settingName] = defaultValue;
-            
+            status = "default";
         }else if(settings[settingName] < minValue){
             settings[settingName] = minValue;
+            status = "too low";
         }else if(settings[settingName] > maxValue){
             settings[settingName] = maxValue
+            status = "too high";
+        }
+
+        if(this.verbose){
+            console.log("Loaded setting '" + settingName + "', status : " + status + ".");
         }
         // If none of these statements is reached, it means that the setting is set correctly
     }
@@ -166,6 +261,10 @@ class ParticlesHandler{
      * Used to create particles.
      */
     initParticleList(){
+
+        if(this.verbose){
+            console.log("Creating " + this.settings.amount + " particles.");
+        }
 
         for(let i = 0; i < this.settings.amount; i++){
 
@@ -239,6 +338,10 @@ class ParticlesHandler{
         // We make sure that we apply the multiplier only once, and not
         // at every tick when the mouse is over.
         if(!this.isMouseOver) {
+            if(this.verbose){
+                console.log("Mouse in, changing multiplier to " + this.settings.multiplierIn + ".");
+            }
+
             for (let index in this.particles) {
                 this.particles[index].setMultiplier(this.settings.multiplierIn);
             }
@@ -253,6 +356,10 @@ class ParticlesHandler{
         // We make sure that we apply the multiplier only once, and not
         // at every tick when the mouse is out.
         if(this.isMouseOver) {
+            if(this.verbose){
+                console.log("Mouse out, changing multiplier to " + this.settings.multiplierOut + ".");
+            }
+
             for (let index in this.particles) {
                 this.particles[index].setMultiplier(this.settings.multiplierOut);
             }

@@ -126,6 +126,15 @@ Things to know :
 - **Multiplier** : It is used to give a "dynamic" look to the particles. You can change the effects when the mouse is in or out of the canvas.
 - **Colors** : Initially, the color of all the particles is white since their luminosity is set to 100%. But further is the multiplier from 1.0, darker the particles are. So the particle colors can be seen when the mouse is over the canvas. This feature will be customizable in the next versions.
 
+## Troubleshooting
+
+To troubleshoot, use verbose = true in the ParticlesHandler constructor. If you do not have a settings variable, put undefined instead.
+```javascript
+let particlesHandler = new particlesHandler("canvas-id", settings, true);
+```
+
+Everything will be written in your browser console. If an error occurred, everything will be explained.
+
 ## Contribution
 
 You can contribute to improve the project as long as your code is clean. I am not a Javascript specialist, I don't know the conventions or anything. Fork the project, and make a pull request, and I will check it as soon as possible.

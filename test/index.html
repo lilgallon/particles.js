@@ -49,8 +49,8 @@
                 // Interaction settings (if the mouse goes in or out of the canvas)
                 multiplierIn: -1, // multiplier if the mouse is in the canvas
                 multiplierOut: -1 // multiplier if the mouse is out of the canvas
-            }
-            let particlesHandler = new ParticlesHandler("particles-canvas", settings);
+            };
+            let particlesHandler = new ParticlesHandler("particles-canvas", settings, false);
             particlesHandler.start();
         })();
     </script>
