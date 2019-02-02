@@ -134,11 +134,10 @@ class ParticlesHandler{
         }
 
         // Make it visually fill the positioned parent
-        this.canvas.style.width = '100%';
-        this.canvas.style.height = '100%';
-        // ...then set the internal size to match
-        this.canvas.width = this.canvas.offsetWidth;
-        this.canvas.height = this.canvas.offsetHeight;
+        this.canvas.width = window.getComputedStyle(document.getElementById("header")).getPropertyValue("width").replace("px", "");
+        this.canvas.height = window.getComputedStyle(document.getElementById("header")).getPropertyValue("height").replace("px", "");
+        this.canvas.style.width = window.getComputedStyle(document.getElementById("header")).getPropertyValue("width");
+        this.canvas.style.height = window.getComputedStyle(document.getElementById("header")).getPropertyValue("height");
 
         if(this.canvas.width === 0 || this.canvas.height === 0){
             let error_msg = "";
