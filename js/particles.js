@@ -25,6 +25,7 @@ class ParticlesHandler{
         this.canvas_id = canvas_id;
         this.running = false;
         this.starting = false;
+        this.resizing = false;
 
         // We will need to check the settings juste before starting the loop
         this.settings = settings;
@@ -134,10 +135,10 @@ class ParticlesHandler{
         }
 
         // Make it visually fill the positioned parent
-        this.canvas.width = window.getComputedStyle(document.getElementById("header")).getPropertyValue("width").replace("px", "");
-        this.canvas.height = window.getComputedStyle(document.getElementById("header")).getPropertyValue("height").replace("px", "");
-        this.canvas.style.width = window.getComputedStyle(document.getElementById("header")).getPropertyValue("width");
-        this.canvas.style.height = window.getComputedStyle(document.getElementById("header")).getPropertyValue("height");
+        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
+        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
 
         if(this.canvas.width === 0 || this.canvas.height === 0){
             let error_msg = "";
@@ -166,13 +167,13 @@ class ParticlesHandler{
 
         this.loadSettings(this.settings);
 
-        // We need a variable to store all the particles
-        this.particles = [];
-
         // Set up mouse event listeners
         let self = this;
         this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
         this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
+
+        // Resize event listener
+        window.addEventListener('resize', self.onResize.bind(this));
     }
 
     /**
@@ -264,6 +265,8 @@ class ParticlesHandler{
         if(this.verbose){
             console.log("Creating " + this.settings.amount + " particles.");
         }
+
+        this.particles = [];
 
         for(let i = 0; i < this.settings.amount; i++){
 
@@ -364,6 +367,20 @@ class ParticlesHandler{
             }
             this.isMouseOver = false;
         }
+    }
+
+    /**
+     * Called when the window is resized.
+     */
+    onResize(){
+        // Resize canvas
+        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
+        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
+
+        // Recreate particles list
+        this.initParticleList();
     }
 
     /**
