@@ -127,12 +127,22 @@ Things to know :
 
 ## Troubleshooting
 
-To troubleshoot, use verbose = true in the ParticlesHandler constructor. If you do not have a settings variable, put undefined instead.
+**General troubleshooting :** To troubleshoot, use verbose = true in the ParticlesHandler constructor. If you do not have a settings variable, put undefined instead.
 ```javascript
 let particlesHandler = new particlesHandler("canvas-id", settings, true);
 ```
 
 Everything will be written in your browser console. If an error occurred, everything will be explained.
+
+**I want my canvas to be behind an other container:** To do so, you have to add these css lines to your canvas container :
+```css
+#canvas-id{
+  position: absolute;
+  left: 0px;
+}
+```
+
+*More help will be provided in the future...*
 
 ## Contribution
 
