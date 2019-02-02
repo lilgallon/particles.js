@@ -211,7 +211,7 @@ class ParticlesHandler{
             }
         };
 
-        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 4000, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
 
