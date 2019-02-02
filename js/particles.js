@@ -133,11 +133,6 @@ class ParticlesHandler{
             return;
         }
 
-        // Set up mouse event listeners
-        let self = this;
-        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
-        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
-
         // Make it visually fill the positioned parent
         this.canvas.style.width = '100%';
         this.canvas.style.height = '100%';
@@ -174,6 +169,11 @@ class ParticlesHandler{
 
         // We need a variable to store all the particles
         this.particles = [];
+
+        // Set up mouse event listeners
+        let self = this;
+        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
+        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
     }
 
     /**
