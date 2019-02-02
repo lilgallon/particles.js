@@ -18,6 +18,8 @@ Main features :
 - Lightweight,
 - Compatible with all browsers.
 
+Example : [my website](https://n3roo.github.io/)
+
 ## How to use it
 
 - Download the [lastest version](https://github.com/N3ROO/particles.js).
