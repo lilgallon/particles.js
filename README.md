@@ -1,6 +1,8 @@
 ![header](https://n3roo.github.io/img/particles-js.png)
 ![tag](https://img.shields.io/github/tag/n3roo/particles.js.svg)
-![issues](https://img.shields.io/github/issues/n3roo/particles.js.svg)
+![opissues](https://img.shields.io/github/issues/n3roo/particles.js.svg)
+![clissues](https://img.shields.io/github/issues-closed/n3roo/particles.js.svg)
+![downloads](https://img.shields.io/github/downloads/n3roo/particles.js/total.svg)
 ![license](https://img.shields.io/github/license/n3roo/particles.js.svg)
 
 An easy way to make your website sexy with particle backgrounds.
@@ -127,12 +129,22 @@ Things to know :
 
 ## Troubleshooting
 
-To troubleshoot, use verbose = true in the ParticlesHandler constructor. If you do not have a settings variable, put undefined instead.
+**General troubleshooting :** To troubleshoot, use verbose = true in the ParticlesHandler constructor. If you do not have a settings variable, put undefined instead.
 ```javascript
 let particlesHandler = new particlesHandler("canvas-id", settings, true);
 ```
 
 Everything will be written in your browser console. If an error occurred, everything will be explained.
+
+**I want my canvas to be behind an other container:** To do so, you have to add these css lines to your canvas container :
+```css
+#canvas-id{
+  position: absolute;
+  left: 0px;
+}
+```
+
+*More help will be provided in the future...*
 
 ## Contribution
 

@@ -8,6 +8,6 @@ body {
 #particles-container{
     background: aqua;
     height: 400px;
-    width: 900px;
+    width: 100%;
     overflow: hidden;
 }

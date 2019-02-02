@@ -1,6 +1,6 @@
 /**
  * particles.js
- * Current version : 1.0
+ * Current version : 1.1
  * Author(s) : Lilian Gallon (N3ROO)
  * Troubleshooting : Instructions are available on the github page.
  * Contribute here : https://github.com/N3ROO/particles.js
@@ -25,6 +25,7 @@ class ParticlesHandler{
         this.canvas_id = canvas_id;
         this.running = false;
         this.starting = false;
+        this.resizing = false;
 
         // We will need to check the settings juste before starting the loop
         this.settings = settings;
@@ -133,17 +134,11 @@ class ParticlesHandler{
             return;
         }
 
-        // Set up mouse event listeners
-        let self = this;
-        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
-        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
-
         // Make it visually fill the positioned parent
-        this.canvas.style.width = '100%';
-        this.canvas.style.height = '100%';
-        // ...then set the internal size to match
-        this.canvas.width = this.canvas.offsetWidth;
-        this.canvas.height = this.canvas.offsetHeight;
+        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
+        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
 
         if(this.canvas.width === 0 || this.canvas.height === 0){
             let error_msg = "";
@@ -172,8 +167,13 @@ class ParticlesHandler{
 
         this.loadSettings(this.settings);
 
-        // We need a variable to store all the particles
-        this.particles = [];
+        // Set up mouse event listeners
+        let self = this;
+        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
+        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
+
+        // Resize event listener
+        window.addEventListener('resize', self.onResize.bind(this));
     }
 
     /**
@@ -211,7 +211,7 @@ class ParticlesHandler{
             }
         };
 
-        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 4000, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
 
@@ -265,6 +265,8 @@ class ParticlesHandler{
         if(this.verbose){
             console.log("Creating " + this.settings.amount + " particles.");
         }
+
+        this.particles = [];
 
         for(let i = 0; i < this.settings.amount; i++){
 
@@ -365,6 +367,20 @@ class ParticlesHandler{
             }
             this.isMouseOver = false;
         }
+    }
+
+    /**
+     * Called when the window is resized.
+     */
+    onResize(){
+        // Resize canvas
+        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
+        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
+
+        // Recreate particles list
+        this.initParticleList();
     }
 
     /**
