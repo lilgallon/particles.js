@@ -12,3 +12,10 @@
 - Detailed verbose to troubelshoot,
 - Easier to install,
 - Lightweight
+
+## Version 1.1 : 02/02/19
+
+- Fix #5 : The canvas does tear anymore when resizing the window
+- Fix #4 : The canvas now fits perfectly the parent container & resizes automatically
+- Fix #2 : The default particle amount has been lowered
+- Small fix : mouse events are now not added to event list if an error occurred during initialization
