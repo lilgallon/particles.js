@@ -1,6 +1,6 @@
 /**
  * particles.js
- * Current version : 1.1
+ * Current version : 1.2
  * Author(s) : Lilian Gallon (N3ROO)
  * Troubleshooting : Instructions are available on the github page.
  * Contribute here : https://github.com/N3ROO/particles.js
@@ -22,7 +22,7 @@ this.canvas.width=window.getComputedStyle(this.canvas.parentNode).getPropertyVal
 if(this.canvas.height===0){error_msg+="The canvas as an height of 0. "}
 console.error({error:error_msg,troubleshooting:"Make sure that the canvas is in a parent div and that the parent div has a non-null size.",impact:"Cancelling particlesHandler initialization."});this.stop();return}
 if(this.verbose){console.log("Canvas size (w, h) : ("+this.canvas.width+","+this.canvas.height+")")}
-this.context=this.canvas.getContext("2d");this.loadSettings(this.settings);let self=this;this.canvas.addEventListener("mouseover",self.mouseOver.bind(this),!1);this.canvas.addEventListener("mouseout",self.mouseOut.bind(this),!1);window.addEventListener('resize',self.onResize.bind(this))}
+this.context=this.canvas.getContext("2d");this.loadSettings(this.settings);let self=this;this.canvas.parentElement.addEventListener("mouseover",self.mouseOver.bind(this),!1);this.canvas.parentElement.addEventListener("mouseout",self.mouseOut.bind(this),!1);window.addEventListener('resize',self.onResize.bind(this))}
 loadSettings(settings){if(this.verbose){console.log("Loading settings.")}
 if(settings===undefined){if(this.verbose){console.log("Settings variable is undefined, we need to create it.")}
 settings={amount:-1,tolerance:-1,lineWidth:-1,sizeMin:-1,sizeMax:-1,positionXMin:-1,positionXMax:-1,positionYMin:-1,positionYMax:-1,speedMin:-1,speedMax:-1,directionMin:-1,directionMax:-1,colorMin:-1,colorMax:-1,multiplierIn:-1,multiplierOut:-1}};this.loadSetting(settings,"amount",this.canvas.width*this.canvas.height/6000,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"tolerance",150,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"lineWidth",3,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"sizeMin",2,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"sizeMax",6,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"positionXMin",settings.sizeMax+1,settings.sizeMax+1,this.canvas.width-settings.sizeMax-1);this.loadSetting(settings,"positionXMax",this.canvas.width-settings.sizeMax,settings.sizeMax+1,this.canvas.width-settings.sizeMax-1);this.loadSetting(settings,"positionYMin",settings.sizeMax+1,settings.sizeMax+1,this.canvas.height-settings.sizeMax-1);this.loadSetting(settings,"positionYMax",this.canvas.height-settings.sizeMax,settings.sizeMax+1,this.canvas.height-settings.sizeMax-1);this.loadSetting(settings,"speedMin",200,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"speedMax",400,0,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"directionMin",0,0,Math.PI*2);this.loadSetting(settings,"directionMax",Math.PI*2,0,Math.PI*2);this.loadSetting(settings,"colorMin",0,0,360);this.loadSetting(settings,"colorMax",360,0,360);this.loadSetting(settings,"multiplierIn",1.5,0.001,Number.MAX_SAFE_INTEGER);this.loadSetting(settings,"multiplierOut",1,0.001,Number.MAX_SAFE_INTEGER);this.settings=settings}
@@ -40,7 +40,7 @@ this.isMouseOver=!0}}
 mouseOut(){if(this.isMouseOver){if(this.verbose){console.log("Mouse out, changing multiplier to "+this.settings.multiplierOut+".")}
 for(let index in this.particles){this.particles[index].setMultiplier(this.settings.multiplierOut)}
 this.isMouseOver=!1}}
-onResize(){this.canvas.width=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px","");this.canvas.height=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px","");this.canvas.style.width=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");this.canvas.style.height=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");this.initParticleList()}
+onResize(){let oldWidth=this.canvas.width;let oldHeight=this.canvas.height;this.canvas.width=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px","");this.canvas.height=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px","");this.canvas.style.width=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");this.canvas.style.height=window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");this.settings.positionXMax+=this.canvas.width-oldWidth;this.settings.positionYMax+=this.canvas.height-oldHeight;this.initParticleList()}
 static random(min,max){return Math.random()*((max+1)-min)+min}}
 class Particle{constructor(x,y,size,speed,direction,color){this.x=x;this.y=y;this.size=size;this.vx=Math.cos(direction)*speed;this.vy=Math.sin(direction)*speed;this.color=color;this.multiplier=1;return this}
 update(width,height){let multiplier_increment=0;if(this.multiplier!==1){multiplier_increment=this.multiplier/2}
