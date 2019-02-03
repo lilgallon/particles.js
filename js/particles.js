@@ -1,6 +1,6 @@
 /**
  * particles.js
- * Current version : 1.1
+ * Current version : 1.2
  * Author(s) : Lilian Gallon (N3ROO)
  * Troubleshooting : Instructions are available on the github page.
  * Contribute here : https://github.com/N3ROO/particles.js
@@ -10,7 +10,7 @@
  /**
   * It sets up the environment, and handle all the particles.
   */
-class ParticlesHandler{
+ class ParticlesHandler{
 
     /**
      * It creates a graph is the specified canvas.
@@ -169,8 +169,8 @@ class ParticlesHandler{
 
         // Set up mouse event listeners
         let self = this;
-        this.canvas.addEventListener("mouseover", self.mouseOver.bind(this), false);
-        this.canvas.addEventListener("mouseout", self.mouseOut.bind(this), false);
+        this.canvas.parentElement.addEventListener("mouseover", self.mouseOver.bind(this), false);
+        this.canvas.parentElement.addEventListener("mouseout", self.mouseOut.bind(this), false);
 
         // Resize event listener
         window.addEventListener('resize', self.onResize.bind(this));
