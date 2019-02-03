@@ -373,11 +373,18 @@
      * Called when the window is resized.
      */
     onResize(){
+        let oldWidth = this.canvas.width;
+        let oldHeight = this.canvas.height;
+
         // Resize canvas
         this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
         this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
         this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
         this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
+
+        // Fix particles spawning position with new size
+        this.settings.positionXMax += this.canvas.width - oldWidth;
+        this.settings.positionYMax += this.canvas.height- oldHeight;
 
         // Recreate particles list
         this.initParticleList();

@@ -55,6 +55,7 @@ start()|If first call : it initializes the particles with the settings (if set),
 stop()|It stops the loop (all the particles are frozen).
 setMultiplierIn(multiplierIn)|Change multiplier when the mouse is in the canvas.
 setMultiplierOut(multiplierOut)|Change multiplier when the mouse out of the canvas.
+onResize()|Force canvas to resize with parent container
 
 - Go to the [github wiki](https://github.com/N3ROO/particles.js/wiki) for more details.
 
@@ -142,6 +143,35 @@ Everything will be written in your browser console. If an error occurred, everyt
   position: absolute;
   left: 0px;
 }
+```
+
+**My canvas is initially not adjusted to its parent container:** This is probably due to the fact that you are generating elements dynamically. The canvas retrieve the parent size before the addition of these new elements, so the size is bad. To fix it you can either :
+- Call `particlesHandler.onResize()` once that the new elements are set up in the parent container,
+- Initialize `particlesHandler` once that the new elements are set up in the parent container.
+
+To be sure that everything is loaded you can use :
+- A Javascript event listener :
+```javascript
+window.addEventListener('load', function() {
+    // Init particles handler here, or call onResize()
+});
+```
+So your code should look like this :
+```html
+<body>
+<!-- HTML code ... -->
+    <script>
+        (function() {
+            window.addEventListener('load', function() {
+                let settings = {
+                    // put your customizations here if you changed anything
+                };
+                let particlesHandler = new ParticlesHandler("particles-canvas", settings);
+                particlesHandler.start();
+            });
+        })();
+    </script>
+</body>
 ```
 
 *More help will be provided in the future...*
