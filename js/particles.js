@@ -192,6 +192,7 @@
 
             settings = {
                 amount: -1,
+                dynamicAmount: -1,
                 tolerance: -1,
                 lineWidth: -1,
                 sizeMin: -1,
