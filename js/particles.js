@@ -211,9 +211,10 @@
             }
         };
 
-        this.loadSetting(settings, "amount"   , this.canvas.width * this.canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
-        this.loadSetting(settings, "tolerance", 150, 0, Number.MAX_SAFE_INTEGER);
-        this.loadSetting(settings, "lineWidth", 3  , 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amount"       , this.canvas.width * this.canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "dynamicAmount", 1, 0, 1);
+        this.loadSetting(settings, "tolerance"    , 150, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "lineWidth"    , 3  , 0, Number.MAX_SAFE_INTEGER);
 
         this.loadSetting(settings, "sizeMin"     , 2, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "sizeMax"     , 6, 0, Number.MAX_SAFE_INTEGER);
@@ -385,6 +386,11 @@
         // Fix particles spawning position with new size
         this.settings.positionXMax += this.canvas.width - oldWidth;
         this.settings.positionYMax += this.canvas.height- oldHeight;
+
+        // Update the particles amount proportionally with the new window size
+        if(this.settings.dynamicAmount === 1){
+            this.settings.amount *= (this.canvas.width * this.canvas.height) / (oldWidth * oldHeight);
+        }
 
         // Recreate particles list
         this.initParticleList();
