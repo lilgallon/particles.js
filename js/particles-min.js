@@ -1,6 +1,6 @@
 /**
  * particles.js
- * Current version : 1.2
+ * Current version : 1.3
  * Author(s) : Lilian Gallon (N3ROO)
  * Troubleshooting : Instructions are available on the github page.
  * Contribute here : https://github.com/N3ROO/particles.js
