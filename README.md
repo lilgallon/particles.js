@@ -67,6 +67,9 @@ To simplify the customization, we use an object written this way :
 
 ```javascript
 let settings = {
+    // General settings
+    disableOnMobile: -1, // If set to true (1), the script is disabled for mobile users
+
     // Handler settings (-1 = default)
     amount: -1, // number of particles
     dynamicAmount: -1, // if set to true (1), the particle amount changes proportionally with the new window size
@@ -107,6 +110,7 @@ Then, add it to the ParticleHandler constructor :
 
 **Setting**|**Description**
 :-----:|:-----:
+disableOnMobile|If set to true (1), the script is disabled for mobile users
 amount|The amount of particles
 dynamicAmount|If set to true (1), the particle amount changes proportionally with the new window size (if a resize event is caught) 
 tolerance|Distance from which lines between particles will be drawn (in pixels)
