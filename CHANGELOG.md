@@ -25,3 +25,9 @@
 - Fix #6 : The mouse event now listen to the parent container, and not the canvas
 - Fix #9 : The spawning position automatically adjusts with the new canvas size if the size changed
 - Add : Troubleshoot guide if the canvas is not initially sized correctly
+
+## Version 1.3 : 01/03/19
+
+- Add #12 : Dynamic particles amount (when resizing the window)
+- Add #13 : Mobile detection (you can disable the script if the user is using a phone)
+- Fix #14 : Particles are not black anymore for user with Microsoft Edge
