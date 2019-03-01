@@ -22,8 +22,12 @@
         // self executing function here (compatibility with all browsers)
         (function() {
             let settings = {
+                //General settings
+                disableOnMobile: -1, // If set to true (1), the script is disabled for mobile users
+
                 // Handler settings (-1 = default)
                 amount: -1, // number of particles
+                dynamicAmount: -1, // if set to true (1), the particle amount changes proportionally with the new window size
                 tolerance: -1, // distance from which lines will be drawn
                 lineWidth: -1, // width of the lines between particles
 
