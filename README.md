@@ -98,6 +98,11 @@ let settings = {
     // Interaction settings (if the mouse goes in or out of the canvas)
     multiplierIn: -1, // multiplier if the mouse is in the canvas
     multiplierOut: -1 // multiplier if the mouse is out of the canvas
+
+    // Color of springs
+    springColorR: -1, // spring color (RED) >=0 & <= 255
+    springColorG: -1, // spring color (GREEN) >=0 & <= 255
+    springColorB: -1  // spring color (NLUE) >=0 & <= 255
 };
 ```
 
@@ -129,6 +134,9 @@ colorMin|The minimum color of a particle (HSL color from 0 to 360)
 colorMax|The maximum color of a particle (HSL color from 0 to 360)
 multiplierIn|The minimum multiplier of a particle (when the mouse is over)
 multiplierOut|The maximum multiplier of a particle (when the mouse is out)
+springColorR|Spring color (RED) >=0 & <= 255
+springColorG|Spring color (GREEN) >=0 & <= 255
+springColorB|Spring color (NLUE) >=0 & <= 255
 
 Things to know :
 - **Default value** : If you want the default value, leave "-1" to the setting concerned.
