@@ -31,3 +31,8 @@
 - Add #12 : Dynamic particles amount (when resizing the window)
 - Add #13 : Mobile detection (you can disable the script if the user is using a phone)
 - Fix #14 : Particles are not black anymore for user with Microsoft Edge
+
+## Version 1.4 : ??/??/19
+
+- Add #16 : Ability to change the springs color (thanks @ElRacoon)
+- 

@@ -189,7 +189,7 @@
 
     /**
      * It verifies and loads the settings.
-     * @param {object} settings variable with all the settings (check github for details)
+     * @param {dict} settings variable with all the settings (check github for details)
      */
     loadSettings(settings){
         if(this.verbose){
@@ -220,7 +220,10 @@
                 colorMin: -1,
                 colorMax: -1,
                 multiplierIn: -1,
-                multiplierOut: -1
+                multiplierOut: -1,
+                springColorR: -1,
+                springColorG: -1,
+                springColorB: -1
             }
         };
 
@@ -247,6 +250,10 @@
 
         this.loadSetting(settings, "multiplierIn" , 1.5, 0.001, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "multiplierOut", 1, 0.001, Number.MAX_SAFE_INTEGER);
+
+        this.loadSetting(settings, "springColorR", 255, 0, 255);
+        this.loadSetting(settings, "springColorG", 255, 0, 255);
+        this.loadSetting(settings, "springColorB", 255, 0, 255);
 
         this.settings = settings;
     }
@@ -343,7 +350,12 @@
                         // Draw the spring
                         this.context.beginPath();
                         this.context.strokeWidth = this.settings.lineWidth;
-                        this.context.strokeStyle = "rgba(255,255,255," + (1 - dist/this.settings.tolerance) + ")";
+                        this.context.strokeStyle = "rgba(" +
+                            this.settings.springColorR + "," +
+                            this.settings.springColorG + "," +
+                            this.settings.springColorB + "," +
+                            (1 - dist/this.settings.tolerance) +
+                            ")";
                         this.context.moveTo(this.particles[index].x, this.particles[index].y);
                         this.context.lineTo(this.particles[neighbor_index].x, this.particles[neighbor_index].y);
                         this.context.stroke();

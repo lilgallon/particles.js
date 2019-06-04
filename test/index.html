@@ -51,8 +51,13 @@
                 colorMax: -1,
 
                 // Interaction settings (if the mouse goes in or out of the canvas)
-                multiplierIn: -1, // multiplier if the mouse is in the canvas
-                multiplierOut: -1 // multiplier if the mouse is out of the canvas
+                multiplierIn: -1,  // multiplier if the mouse is in the canvas
+                multiplierOut: -1, // multiplier if the mouse is out of the canvas
+
+                // Color of springs
+                springColorR: -1, // spring color (RED) >=0 & <= 255
+                springColorG: -1, // spring color (GREEN) >=0 & <= 255
+                springColorB: -1  // spring color (NLUE) >=0 & <= 255
             };
             let particlesHandler = new ParticlesHandler("particles-canvas", settings, false);
             particlesHandler.start();
