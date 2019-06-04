@@ -185,7 +185,7 @@ So your code should look like this :
                 particlesHandler.start();
 
                 // If you want to update the settings in real time
-                // (to aniamte the colors for example):
+                // (to animate the colors for example):
                 let i = 1;
                 let gradient = function(){
                     let settings = particlesHandler.settings;
