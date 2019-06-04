@@ -22,31 +22,31 @@
      * @param verbose the script writes what is happenning to the console.
      */
     constructor(canvas_id, settings, verbose){
-        this.canvas_id = canvas_id;
-        this.running = false;
-        this.starting = false;
-        this.resizing = false;
+        this._canvas_id = canvas_id;
+        this._running = false;
+        this._starting = false;
+        this._resizing = false;
 
         // We will need to check the settings juste before starting the loop
-        this.settings = settings;
+        this._settings = settings;
 
         // Used to troubleshoot
         if(verbose === undefined){
-            this.verbose = false;
+            this._verbose = false;
         }else{
-            this.verbose = verbose;
+            this._verbose = verbose;
         }
 
         // Event handling
-        this.isMouseOver = false;
+        this._isMouseOver = false;
     }
 
     /**
      * Starts the graph (or resume it)
      */
     start(){
-        this.running = true;
-        this.starting = true;
+        this._running = true;
+        this._starting = true;
         this.run();
     }
 
@@ -54,51 +54,37 @@
      * Stops the graph.
      */
     stop(){
-        this.running = false;
-    }
-
-    /**
-     * @param {number} multiplierIn multiplier when the mouse is in the canvas.
-     */
-    setMultiplierIn(multiplierIn){
-        this.settings.multiplierIn = multiplierIn;
-    }
-
-    /**
-     * @param {number} multiplierOut multiplier when the mouse is out of the canvas.
-     */
-    setMultiplierOut(multiplierOut){
-        this.settings.multiplierOut = multiplierOut;
+        this._running = false;
     }
 
     /**
      * This is the loop function.
      */
     run(){
-        if(this.starting) {
-            if(this.verbose){
+        if(this._starting) {
+            if(this._verbose){
                 console.log("First start, we need to init everything.");
             }
 
             this.init();
             this.initParticleList();
-            this.starting = false;
+            this._starting = false;
 
-            if(this.verbose && this.running){
+            if(this._verbose && this._running){
                 console.log("Everything is ready.");
-            }else if(this.verbose){
+            }else if(this._verbose){
                 console.log("A problem occurred during init.");
             }
         }
 
         // It could have been cancelled during init if an error occurred
-        if(this.running){
+        if(this._running){
             this.update();
             this.draw();
 
             this.requestRedraw();
         }else{
-            if(this.verbose){
+            if(this._verbose){
                 console.log("Loop stopped.");
             }
         }
@@ -118,15 +104,15 @@
      * Used to init all the variables used to run the graph.
      */
     init(){
-        if(this.verbose){
+        if(this._verbose){
             console.log("particlesHandler initialization.");
         }
 
         // We need to retrieve the canvas information
-        this.canvas = document.getElementById(this.canvas_id);
-        if(this.canvas === null){
+        this._canvas = document.getElementById(this._canvas_id);
+        if(this._canvas === null){
             console.error({
-                error: "The canvas id '" + this.canvas_id + "' was not found.",
+                error: "The canvas id '" + this._canvas_id + "' was not found.",
                 troubleshooting: "Make sure that it is spelled corretly, and that it does not have the # prefix.",
                 impact: "Cancelling particlesHandler initialization."
             });
@@ -135,17 +121,17 @@
         }
 
         // Make it visually fill the positioned parent
-        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
-        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
-        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
-        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
+        this._canvas.width = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this._canvas.height = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this._canvas.style.width = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("width");
+        this._canvas.style.height = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("height");
 
-        if(this.canvas.width === 0 || this.canvas.height === 0){
+        if(this._canvas.width === 0 || this._canvas.height === 0){
             let error_msg = "";
-            if(this.canvas.width === 0){
+            if(this._canvas.width === 0){
                 error_msg += "The canvas as a width of 0. ";
             }
-            if(this.canvas.height === 0){
+            if(this._canvas.height === 0){
                 error_msg += "The canvas as an height of 0. ";
             }
 
@@ -158,19 +144,19 @@
             return;
         }
 
-        if(this.verbose){
-            console.log("Canvas size (w, h) : (" + this.canvas.width + "," + this.canvas.height + ")");
+        if(this._verbose){
+            console.log("Canvas size (w, h) : (" + this._canvas.width + "," + this._canvas.height + ")");
         }
 
         // Now we can get the information
-        this.context = this.canvas.getContext("2d");
+        this._context = this._canvas.getContext("2d");
 
-        this.loadSettings(this.settings);
+        this.loadSettings(this._settings);
 
         // Check if it is disabled on mobile and if the user uses a mobile
-        if(this.settings.disableOnMobile === 1){
+        if(this._settings.disableOnMobile === 1){
             if(this.isOnMobile()){
-                if(this.verbose){
+                if(this._verbose){
                     console.log("The particles script is disabled for mobile users.")
                 }
                 this.stop();
@@ -180,8 +166,8 @@
 
         // Set up mouse event listeners
         let self = this;
-        this.canvas.parentElement.addEventListener("mouseover", self.mouseOver.bind(this), false);
-        this.canvas.parentElement.addEventListener("mouseout", self.mouseOut.bind(this), false);
+        this._canvas.parentElement.addEventListener("mouseover", self.mouseOver.bind(this), false);
+        this._canvas.parentElement.addEventListener("mouseout", self.mouseOut.bind(this), false);
 
         // Resize event listener
         window.addEventListener('resize', self.onResize.bind(this));
@@ -192,12 +178,12 @@
      * @param {dict} settings variable with all the settings (check github for details)
      */
     loadSettings(settings){
-        if(this.verbose){
+        if(this._verbose){
             console.log("Loading settings.");
         }
 
         if(settings === undefined){
-            if(this.verbose){
+            if(this._verbose){
                 console.log("Settings variable is undefined, we need to create it.");
             }
 
@@ -229,7 +215,7 @@
 
         this.loadSetting(settings, "disableOnMobile", 1, 0, 1);
 
-        this.loadSetting(settings, "amount"       , this.canvas.width * this.canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amount"       , this._canvas.width * this._canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "dynamicAmount", 1, 0, 1);
         this.loadSetting(settings, "tolerance"    , 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth"    , 3  , 0, Number.MAX_SAFE_INTEGER);
@@ -237,10 +223,10 @@
         this.loadSetting(settings, "sizeMin"     , 2, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "sizeMax"     , 6, 0, Number.MAX_SAFE_INTEGER);
 
-        this.loadSetting(settings, "positionXMin", settings.sizeMax + 1, settings.sizeMax + 1, this.canvas.width - settings.sizeMax - 1);
-        this.loadSetting(settings, "positionXMax", this.canvas.width - settings.sizeMax, settings.sizeMax + 1, this.canvas.width - settings.sizeMax - 1);
-        this.loadSetting(settings, "positionYMin", settings.sizeMax + 1, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
-        this.loadSetting(settings, "positionYMax", this.canvas.height - settings.sizeMax, settings.sizeMax + 1, this.canvas.height - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionXMin", settings.sizeMax + 1, settings.sizeMax + 1, this._canvas.width - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionXMax", this._canvas.width - settings.sizeMax, settings.sizeMax + 1, this._canvas.width - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionYMin", settings.sizeMax + 1, settings.sizeMax + 1, this._canvas.height - settings.sizeMax - 1);
+        this.loadSetting(settings, "positionYMax", this._canvas.height - settings.sizeMax, settings.sizeMax + 1, this._canvas.height - settings.sizeMax - 1);
         this.loadSetting(settings, "speedMin"    , 200, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "speedMax"    , 400, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "directionMin", 0, 0, Math.PI * 2);
@@ -255,7 +241,7 @@
         this.loadSetting(settings, "springColorG", 255, 0, 255);
         this.loadSetting(settings, "springColorB", 255, 0, 255);
 
-        this.settings = settings;
+        this._settings = settings;
     }
 
     loadSetting(settings, settingName, defaultValue, minValue, maxValue){
@@ -274,7 +260,7 @@
             status = "too high";
         }
 
-        if(this.verbose){
+        if(this._verbose){
             console.log("Loaded setting '" + settingName + "', status : " + status + ".");
         }
         // If none of these statements is reached, it means that the setting is set correctly
@@ -295,41 +281,44 @@
      */
     initParticleList(){
 
-        if(this.verbose){
-            console.log("Creating " + this.settings.amount + " particles.");
+        if(this._verbose){
+            console.log("Creating " + this._settings.amount + " particles.");
         }
 
-        this.particles = [];
+        this._particles = [];
 
-        for(let i = 0; i < this.settings.amount; i++){
-
-            // We create the size first since we will use it to find the positions
-            let size = ParticlesHandler.random(this.settings.sizeMin, this.settings.sizeMax);
-
-            // Position (make sure that it is not out of bounds)
-            let x = ParticlesHandler.random(this.settings.positionXMin, this.settings.positionXMax);
-            let y = ParticlesHandler.random(this.settings.positionYMin, this.settings.positionYMax);
-
-            // Then, we need the velocity vector (speed and direction)
-            let speed = ParticlesHandler.random(this.settings.speedMin, this.settings.speedMax);
-            let direction = ParticlesHandler.random(this.settings.directionMin, this.settings.directionMax);
-
-            let color = ParticlesHandler.random(this.settings.colorMin, this.settings.colorMax);
-
-            // Now we can create the particle
-            let dot = new Particle(x, y, size, speed / 1000, direction, color);
-
-            // Add this dot to the particle list
-            this.particles.push(dot)
+        for(let i = 0; i < this._settings.amount; i++){
+            this._particles.push(this.createParticleWithCurrentSettings());
         }
+    }
+
+    /**
+     * @returns a particle created according to the current _settings.
+     */
+    createParticleWithCurrentSettings(){
+        // We create the size first since we will use it to find the positions
+        let size = ParticlesHandler.random(this._settings.sizeMin, this._settings.sizeMax);
+
+        // Position (make sure that it is not out of bounds)
+        let x = ParticlesHandler.random(this._settings.positionXMin, this._settings.positionXMax);
+        let y = ParticlesHandler.random(this._settings.positionYMin, this._settings.positionYMax);
+
+        // Then, we need the velocity vector (speed and direction)
+        let speed = ParticlesHandler.random(this._settings.speedMin, this._settings.speedMax);
+        let direction = ParticlesHandler.random(this._settings.directionMin, this._settings.directionMax);
+
+        let color = ParticlesHandler.random(this._settings.colorMin, this._settings.colorMax);
+
+        // Now we can create the particle
+        return new Particle(x, y, size, speed / 1000, direction, color);
     }
 
     /**
      * It updates all the particles (positions and springs).
      */
     update(){
-        for(let index in this.particles){
-            this.particles[index].update(this.canvas.width, this.canvas.height);
+        for(let index in this._particles){
+            this._particles[index].update(this._canvas.width, this._canvas.height);
         }
     }
 
@@ -337,37 +326,37 @@
      * It draws all the particles.
      */
     draw(){
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        for(let index in this.particles){
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        for(let index in this._particles){
             // We need to draw the springs between particles before them otherwise, the springs
             // will be over and not under the particles
-            for(let neighbor_index in this.particles){
+            for(let neighbor_index in this._particles){
                 if(neighbor_index !== index){
                     // Retrieve the distance
-                    let dist = this.particles[index].distanceTo(this.particles[neighbor_index]);
+                    let dist = this._particles[index].distanceTo(this._particles[neighbor_index]);
 
-                    if(dist < this.settings.tolerance){
+                    if(dist < this._settings.tolerance){
                         // Draw the spring
-                        this.context.beginPath();
-                        this.context.strokeWidth = this.settings.lineWidth;
-                        this.context.strokeStyle = "rgba(" +
-                            this.settings.springColorR + "," +
-                            this.settings.springColorG + "," +
-                            this.settings.springColorB + "," +
-                            (1 - dist/this.settings.tolerance) +
+                        this._context.beginPath();
+                        this._context.strokeWidth = this._settings.lineWidth;
+                        this._context.strokeStyle = "rgba(" +
+                            this._settings.springColorR + "," +
+                            this._settings.springColorG + "," +
+                            this._settings.springColorB + "," +
+                            (1 - dist/this._settings.tolerance) +
                             ")";
-                        this.context.moveTo(this.particles[index].x, this.particles[index].y);
-                        this.context.lineTo(this.particles[neighbor_index].x, this.particles[neighbor_index].y);
-                        this.context.stroke();
-                        this.context.closePath();
+                        this._context.moveTo(this._particles[index].x, this._particles[index].y);
+                        this._context.lineTo(this._particles[neighbor_index].x, this._particles[neighbor_index].y);
+                        this._context.stroke();
+                        this._context.closePath();
                     }
                 }
             }
         }
 
         // We draw it here so the springs are under the particles
-        for(let index in this.particles){
-            this.particles[index].draw(this.context);
+        for(let index in this._particles){
+            this._particles[index].draw(this._context);
         }
     }
 
@@ -377,15 +366,15 @@
     mouseOver(){
         // We make sure that we apply the multiplier only once, and not
         // at every tick when the mouse is over.
-        if(!this.isMouseOver) {
-            if(this.verbose){
-                console.log("Mouse in, changing multiplier to " + this.settings.multiplierIn + ".");
+        if(!this._isMouseOver) {
+            if(this._verbose){
+                console.log("Mouse in, changing multiplier to " + this._settings.multiplierIn + ".");
             }
 
-            for (let index in this.particles) {
-                this.particles[index].setMultiplier(this.settings.multiplierIn);
+            for (let index in this._particles) {
+                this._particles[index].setMultiplier(this._settings.multiplierIn);
             }
-            this.isMouseOver = true;
+            this._isMouseOver = true;
         }
     }
 
@@ -395,15 +384,15 @@
     mouseOut(){
         // We make sure that we apply the multiplier only once, and not
         // at every tick when the mouse is out.
-        if(this.isMouseOver) {
-            if(this.verbose){
-                console.log("Mouse out, changing multiplier to " + this.settings.multiplierOut + ".");
+        if(this._isMouseOver) {
+            if(this._verbose){
+                console.log("Mouse out, changing multiplier to " + this._settings.multiplierOut + ".");
             }
 
-            for (let index in this.particles) {
-                this.particles[index].setMultiplier(this.settings.multiplierOut);
+            for (let index in this._particles) {
+                this._particles[index].setMultiplier(this._settings.multiplierOut);
             }
-            this.isMouseOver = false;
+            this._isMouseOver = false;
         }
     }
 
@@ -411,22 +400,22 @@
      * Called when the window is resized.
      */
     onResize(){
-        let oldWidth = this.canvas.width;
-        let oldHeight = this.canvas.height;
+        let oldWidth = this._canvas.width;
+        let oldHeight = this._canvas.height;
 
         // Resize canvas
-        this.canvas.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width").replace("px", "");
-        this.canvas.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height").replace("px", "");
-        this.canvas.style.width = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("width");
-        this.canvas.style.height = window.getComputedStyle(this.canvas.parentNode).getPropertyValue("height");
+        this._canvas.width = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("width").replace("px", "");
+        this._canvas.height = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("height").replace("px", "");
+        this._canvas.style.width = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("width");
+        this._canvas.style.height = window.getComputedStyle(this._canvas.parentNode).getPropertyValue("height");
 
         // Fix particles spawning position with new size
-        this.settings.positionXMax += this.canvas.width - oldWidth;
-        this.settings.positionYMax += this.canvas.height- oldHeight;
+        this._settings.positionXMax += this._canvas.width - oldWidth;
+        this._settings.positionYMax += this._canvas.height- oldHeight;
 
         // Update the particles amount proportionally with the new window size
-        if(this.settings.dynamicAmount === 1){
-            this.settings.amount *= (this.canvas.width * this.canvas.height) / (oldWidth * oldHeight);
+        if(this._settings.dynamicAmount === 1){
+            this._settings.amount *= (this._canvas.width * this._canvas.height) / (oldWidth * oldHeight);
         }
 
         // Recreate particles list
@@ -440,6 +429,127 @@
      */
     static random(min, max){
         return Math.random() * ((max + 1) - min) + min;
+    }
+
+    /**
+     * Settings available:
+     * - disableOnMobile
+     * - amount
+     * - dynamicAmount
+     * - tolerance
+     * - lineWidth
+     * - sizeMin
+     * - sizeMax
+     * - positionXMin
+     * - positionXMax
+     * - positionYMin
+     * - positionYMax
+     * - speedMin
+     * - speedMax
+     * - directionMin
+     * - directionMax
+     * - colorMin
+     * - colorMax
+     * - multiplierIn
+     * - multiplierOut
+     * - springColorR
+     * - springColorG
+     * - springColorB
+     * @returns {dict} a clone of the current used settings.
+     */
+    get settings(){
+        return JSON.parse(JSON.stringify(this._settings));
+    }
+
+    /**
+     * @param {dict} settings that will be applied in real time.
+     */
+    set settings(settings){
+        // disableOnMobile: stop the loop if needed
+        if(settings.disableOnMobile && this.isOnMobile() && this._running){
+            this.stop();
+            this._particles = [];
+        }
+
+        // amount: remove excessive particles, or add particles
+        if(settings.amount < this._settings.amount) {
+            this._particles.splice(0, this._settings.amount - settings.amount);
+        } else if (settings.amount > this._settings.amount) {
+            for(let i = 0; i < settings.amount - this._settings.amount; i++){
+                this._particles.push(this.createParticleWithCurrentSettings());
+            }
+        }
+
+        // dynamicAmount: nothing special to do
+        // tolerance: nothing special to do
+        // lineWidth: nothing special to do
+
+        // sizeMin: we need to update all the particles with the new min size (if not in the range)
+        let sizeUpdated = settings.sizeMin != this._settings.sizeMin;
+        // sizeMax: we need to update all the particles with the new max size (if not in the range)
+        sizeUpdated = sizeUpdated || settings.sizeMax != this._settings.sizeMax;
+
+        // positionXMin: we need to move all the particles that aren't in the area
+        let positionUpdated = settings.positionXMin != this._settings.positionXMin;
+        // positionXMax: we need to move all the particles that aren't in the area
+        positionUpdated = positionUpdated || settings.positionXMax != this._settings.positionXMax;
+        // positionYMin: we need to move all the particles that aren't in the area
+        positionUpdated = positionUpdated || settings.positionYMin != this._settings.positionYMin;
+        // positionYMax: we need to move all the particles that aren't in the area
+        positionUpdated = positionUpdated || settings.positionYMax != this._settings.positionYMax;
+
+        // speedMin: we need to update all the particles with the new min speed (if not in the range)
+        let speedUpdated = settings.speedMin != this._settings.speedMin;
+        // speedMax: we need to update all the particles with the new min speed (if not in the range)
+        speedUpdated = speedUpdated || settings.speedMax != this._settings.speedMax;
+
+        // directionMin: nothing special to do
+        // directionMax: nothing special to do
+
+        // colorMin: we need to update all the particles with the new min color (if not in the range)
+        let colorUpdated = settings.colorMin != this._settings.colorMin;
+        // colorMax: we need to update all the particles with the new max color (if not in the range)
+        colorUpdated = colorUpdated || settings.colorMax != this._settings.colorMax;
+
+        // multiplierIn: nothing special to do
+        // multiplierOut: nothing special to do
+        // springColorR: nothing special to do
+        // springColorG: nothing special to do
+        // springColorB: nothing special to do
+
+        // It validates and apply the settings
+        this.loadSettings(settings);
+
+        if(sizeUpdated || positionUpdated || speedUpdated || colorUpdated){
+            for(let index in this._particles){
+                if(sizeUpdated){
+                    if(this._particles[index].size < this._settings.sizeMin || this._particles[index].size > this._settings.sizeMax){
+                        this._particles[index].size = ParticlesHandler.random(this._settings.sizeMin, this._settings.sizeMax);
+                    }
+                }
+
+                if(positionUpdated){
+                    if(this._particles[index].x < this._settings.positionXMin || this._particles[index].x > this._settings.positionXMax){
+                        this._particles[index].x = ParticlesHandler.random(this._settings.positionXMin, this._settings.positionXMax);
+                    }
+                    if(this._particles[index].y < this._settings.positionYMin || this._particles[index].y > this._settings.positionYMax){
+                        this._particles[index].y = ParticlesHandler.random(this._settings.positionYMin, this._settings.positionYMax);
+                    }
+                }
+
+                if(speedUpdated){
+                    if(this._particles[index].getSpeed() < this._settings.speedMin || this._particles[index].getSpeed() > this._settings.speedMax){
+                        this._particles[index].setSpeed(ParticlesHandler.random(this._settings.speedMin, this._settings.speedMax));
+                    }
+                }
+
+                if(colorUpdated){
+                    if(this._particles[index].color < this._settings.colorMin || this._particles[index].color > this._settings.colorMax){
+                        this._particles[index].color = ParticlesHandler.random(this._settings.colorMin, this._settings.colorMax);
+                    }
+                }
+            }
+        }
     }
 }
 

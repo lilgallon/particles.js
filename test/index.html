@@ -61,6 +61,35 @@
             };
             let particlesHandler = new ParticlesHandler("particles-canvas", settings, false);
             particlesHandler.start();
+
+            // let i = 1;
+            // let gradient = function(){
+            //     let settings = particlesHandler.settings;
+            //     settings.colorMin = i;
+            //     settings.colorMax = i;
+            //     particlesHandler.settings= settings;
+            //     i++;
+            //     if(i > 360) i = 0;
+            // };
+            // setInterval(gradient, 20);
+
+            // let speedy = function(){
+            //     let settings = particlesHandler.settings;
+            //     settings.speedMin = 4;
+            //     settings.speedMax = 5;
+            //     particlesHandler.settings = settings;
+            // }
+            // speedy();
+
+            // let changeArea = function(){
+            //     settings = particlesHandler.settings;
+            //     settings.positionXMin = 20;
+            //     settings.positionXMax = 50;
+            //     settings.positionYMax = 5;
+            //     settings.positionYMax = 100;
+            //     particlesHandler.settings = settings;
+            // }
+            // setInterval(changeArea, 3000);
         })();
     </script>
 </body>

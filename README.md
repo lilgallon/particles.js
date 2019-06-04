@@ -55,9 +55,8 @@ Example : [my website](https://n3roo.github.io/)
 ParticlesHandler(canvas-id, settings)|It creates the class attributes.
 start()|If first call : it initializes the particles with the settings (if set), and starts the loop. Otherwise it resumes the loop.
 stop()|It stops the loop (all the particles are frozen).
-setMultiplierIn(multiplierIn)|Change multiplier when the mouse is in the canvas.
-setMultiplierOut(multiplierOut)|Change multiplier when the mouse out of the canvas.
-onResize()|Force canvas to resize with parent container
+onResize()|Force canvas to resize with parent container.
+settings|Getter and setter to update any settings in real time. The values are validated before being applied (the process is optimized).
 
 - Go to the [github wiki](https://github.com/N3ROO/particles.js/wiki) for more details.
 
@@ -184,6 +183,19 @@ So your code should look like this :
                 };
                 let particlesHandler = new ParticlesHandler("particles-canvas", settings);
                 particlesHandler.start();
+
+                // If you want to update the settings in real time
+                // (to aniamte the colors for example):
+                let i = 1;
+                let gradient = function(){
+                    let settings = particlesHandler.settings;
+                    settings.colorMin = i;
+                    settings.colorMax = i;
+                    particlesHandler.settings= settings;
+                    i++;
+                    if(i > 360) i = 0;
+                };
+                setInterval(gradient, 20);
             });
         })();
     </script>

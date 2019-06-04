@@ -34,5 +34,20 @@
 
 ## Version 1.4 : ??/??/19
 
+**Not backward compatible. Here are the details why:**
+- setMultiplierIn and setMultiplierOut were removed. Now, you can update in real time any setting:
+```javascript
+// Retrieve the settings
+let settings = particleHandler.settings;
+// Update the settings
+particleHandler.settings.multiplierIn = 123;
+particleHandler.settings.multiplierOut = 456;
+// Apply changes
+particleHandler.settings = settings;
+```
+- All the attributes are now private (except settings)
+
+Changes:
 - Add #16 : Ability to change the springs color (thanks @ElRacoon)
-- 
+  - New settings: springColorR, springColorG, springColorB
+- Add #18 : Ability to change & update settings at any time
