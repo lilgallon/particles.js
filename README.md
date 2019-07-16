@@ -55,9 +55,8 @@ Example : [my website](https://n3roo.github.io/)
 ParticlesHandler(canvas-id, settings)|It creates the class attributes.
 start()|If first call : it initializes the particles with the settings (if set), and starts the loop. Otherwise it resumes the loop.
 stop()|It stops the loop (all the particles are frozen).
-setMultiplierIn(multiplierIn)|Change multiplier when the mouse is in the canvas.
-setMultiplierOut(multiplierOut)|Change multiplier when the mouse out of the canvas.
-onResize()|Force canvas to resize with parent container
+onResize()|Force canvas to resize with parent container.
+settings|Getter and setter to update any settings in real time. The values are validated before being applied (the process is optimized).
 
 - Go to the [github wiki](https://github.com/N3ROO/particles.js/wiki) for more details.
 
@@ -72,6 +71,8 @@ let settings = {
 
     // Handler settings (-1 = default)
     amount: -1, // number of particles
+    amountMin: -1, // min number of particles (useful if dynamicAmount is set to true)
+    amountMax: -1, // max number of particles (useful if dynamicAmount is set to true)
     dynamicAmount: -1, // if set to true (1), the particle amount changes proportionally with the new window size
     tolerance: -1, // distance from which lines will be drawn
     lineWidth: -1, // width of the lines between particles
@@ -98,6 +99,11 @@ let settings = {
     // Interaction settings (if the mouse goes in or out of the canvas)
     multiplierIn: -1, // multiplier if the mouse is in the canvas
     multiplierOut: -1 // multiplier if the mouse is out of the canvas
+
+    // Color of springs
+    springColorR: -1, // spring color (RED) >=0 & <= 255
+    springColorG: -1, // spring color (GREEN) >=0 & <= 255
+    springColorB: -1  // spring color (NLUE) >=0 & <= 255
 };
 ```
 
@@ -112,6 +118,8 @@ Then, add it to the ParticleHandler constructor :
 :-----:|:-----:
 disableOnMobile|If set to true (1), the script is disabled for mobile users
 amount|The amount of particles
+amountMin|The min amount of particles (useful if dynamicAmount is set to true)
+amountMax|The max amount of particles (useful if dynamicAmount is set to true)
 dynamicAmount|If set to true (1), the particle amount changes proportionally with the new window size (if a resize event is caught) 
 tolerance|Distance from which lines between particles will be drawn (in pixels)
 lineWidth|Width of the lines between particles (in pixels)
@@ -129,6 +137,9 @@ colorMin|The minimum color of a particle (HSL color from 0 to 360)
 colorMax|The maximum color of a particle (HSL color from 0 to 360)
 multiplierIn|The minimum multiplier of a particle (when the mouse is over)
 multiplierOut|The maximum multiplier of a particle (when the mouse is out)
+springColorR|Spring color (RED) >=0 & <= 255
+springColorG|Spring color (GREEN) >=0 & <= 255
+springColorB|Spring color (NLUE) >=0 & <= 255
 
 Things to know :
 - **Default value** : If you want the default value, leave "-1" to the setting concerned.
@@ -176,6 +187,19 @@ So your code should look like this :
                 };
                 let particlesHandler = new ParticlesHandler("particles-canvas", settings);
                 particlesHandler.start();
+
+                // If you want to update the settings in real time
+                // (to animate the colors for example):
+                let i = 1;
+                let gradient = function(){
+                    let settings = particlesHandler.settings;
+                    settings.colorMin = i;
+                    settings.colorMax = i;
+                    particlesHandler.settings= settings;
+                    i++;
+                    if(i > 360) i = 0;
+                };
+                setInterval(gradient, 20);
             });
         })();
     </script>
