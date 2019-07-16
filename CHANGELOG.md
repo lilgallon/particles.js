@@ -39,6 +39,8 @@
 - The method `setMultiplierOut` *(it has been removed)*
 - Any attribute except `settings` *(they are now private)*
 
+Otherwise, you don't have to change anything, it will be working.
+
 **Changes:**
 
 - setMultiplierIn and setMultiplierOut were removed. Now, you can update in real time any setting:
