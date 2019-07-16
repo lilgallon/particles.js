@@ -34,7 +34,13 @@
 
 ## Version 1.4 : 16/07/19
 
-**Not backward compatible if you used setMultiplierIn or setMultiplierOut. Here are the details why:**
+**This update is not backward compatible if you used:**
+- The method `setMultiplierIn` *(it has been removed)*
+- The method `setMultiplierOut` *(it has been removed)*
+- Any attribute except `settings` *(they are now private)*
+
+**Changes:**
+
 - setMultiplierIn and setMultiplierOut were removed. Now, you can update in real time any setting:
 ```javascript
 // Retrieve the settings
@@ -46,13 +52,9 @@ particleHandler.settings.multiplierOut = 456;
 particleHandler.settings = settings;
 ```
 - All the attributes are now private (except settings)
-
-Changes:
 - Add #16: Ability to change the springs color (thanks @ElRacoon)
   - New settings: springColorR, springColorG, springColorB
 - Add #18: Ability to change & update settings at any time
 - Add #19: Ability to set a min and a max amount of particles (useful when using dynamic amount)
 - Fix #20: Some methods needed to be private, now they are private following ECMA6
-
-Misc:
 - Decreased default amount of particles
