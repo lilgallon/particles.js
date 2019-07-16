@@ -32,9 +32,9 @@
 - Add #13 : Mobile detection (you can disable the script if the user is using a phone)
 - Fix #14 : Particles are not black anymore for user with Microsoft Edge
 
-## Version 1.4 : ??/??/19
+## Version 1.4 : 16/07/19
 
-**Not backward compatible. Here are the details why:**
+**Not backward compatible if you used setMultiplierIn or setMultiplierOut. Here are the details why:**
 - setMultiplierIn and setMultiplierOut were removed. Now, you can update in real time any setting:
 ```javascript
 // Retrieve the settings
@@ -48,6 +48,11 @@ particleHandler.settings = settings;
 - All the attributes are now private (except settings)
 
 Changes:
-- Add #16 : Ability to change the springs color (thanks @ElRacoon)
+- Add #16: Ability to change the springs color (thanks @ElRacoon)
   - New settings: springColorR, springColorG, springColorB
-- Add #18 : Ability to change & update settings at any time
+- Add #18: Ability to change & update settings at any time
+- Add #19: Ability to set a min and a max amount of particles (useful when using dynamic amount)
+- Fix #20: Some methods needed to be private, now they are private following ECMA6
+
+Misc:
+- Decreased default amount of particles
