@@ -217,7 +217,7 @@
 
         this._loadSetting(settings, "disableOnMobile", 1, 0, 1);
 
-        let amount = this._canvas.width * this._canvas.height / 7000
+        let amount = this._canvas.width * this._canvas.height / 15000;
         this._loadSetting(settings, "amount"       , amount, 0, Number.MAX_SAFE_INTEGER);
         this._loadSetting(settings, "amountMin"    , amount - 0.5 * amount, 0, Number.MAX_SAFE_INTEGER);
         this._loadSetting(settings, "amountMax"    , amount + 0.2 * amount, 0, Number.MAX_SAFE_INTEGER);
