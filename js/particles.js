@@ -190,6 +190,8 @@
             settings = {
                 disableOnMobile: -1,
                 amount: -1,
+                amountMin: -1,
+                amountMax: -1,
                 dynamicAmount: -1,
                 tolerance: -1,
                 lineWidth: -1,
@@ -215,8 +217,12 @@
 
         this.loadSetting(settings, "disableOnMobile", 1, 0, 1);
 
-        this.loadSetting(settings, "amount"       , this._canvas.width * this._canvas.height / 6000, 0, Number.MAX_SAFE_INTEGER);
+        let amount = this._canvas.width * this._canvas.height / 7000
+        this.loadSetting(settings, "amount"       , amount, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amountMin"    , amount - 0.5 * amount, 0, Number.MAX_SAFE_INTEGER);
+        this.loadSetting(settings, "amountMax"    , amount + 0.2 * amount, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "dynamicAmount", 1, 0, 1);
+
         this.loadSetting(settings, "tolerance"    , 150, 0, Number.MAX_SAFE_INTEGER);
         this.loadSetting(settings, "lineWidth"    , 3  , 0, Number.MAX_SAFE_INTEGER);
 
@@ -287,7 +293,11 @@
 
         this._particles = [];
 
-        for(let i = 0; i < this._settings.amount; i++){
+        let amount = this._settings.amount > this._settings.amountMax ?
+            this._settings.amountMax : (this._settings.amount < this._settings.amountMin ?
+                this._settings.amountMin : this._settings.amount);
+
+        for(let i = 0; i < amount; i++){
             this._particles.push(this.createParticleWithCurrentSettings());
         }
     }
@@ -418,6 +428,12 @@
             this._settings.amount *= (this._canvas.width * this._canvas.height) / (oldWidth * oldHeight);
         }
 
+        if(this._settings.amount > this._settings.amountMax) {
+            this._settings.amount = this._settings.amountMax;
+        } else if (this._settings.amount < this._settings.amountMin) {
+            this._settings.amount = this._settings.amountMin;
+        }
+
         // Recreate particles list
         this.initParticleList();
     }
@@ -471,11 +487,39 @@
             this._particles = [];
         }
 
-        // amount: remove excessive particles, or add particles
-        if(settings.amount < this._settings.amount) {
-            this._particles.splice(0, this._settings.amount - settings.amount);
-        } else if (settings.amount > this._settings.amount) {
-            for(let i = 0; i < settings.amount - this._settings.amount; i++){
+        // amount: remove excessive particles, or add particles, AND take in account min/max
+        if(this._settings.amountMin != settings.amountMin && settings.amount < settings.amountMin) {
+            settings.amount = settings.amountMin;
+        }
+
+        if(this._settings.amountMax != settings.amountMax && settings.amount > settings.amountMax) {
+            settings.amount = settings.amountMax;
+        }
+
+        let diffAmount = this._settings.amount - settings.amount;
+
+        if(diffAmount > 0) {
+            let amountToRemove;
+
+            if(this._particles.length - diffAmount < settings.amountMin) {
+                amountToRemove = diffAmount - (settings.amountMin - settings.amount);
+            } else {
+                amountToRemove = diffAmount;
+            }
+
+            this._particles.splice(0, amountToRemove);
+
+        } else if (diffAmount < 0) {
+            diffAmount *= -1;
+            let amountToAdd;
+
+            if(this._particles.length + diffAmount > settings.amountMax) {
+                amountToAdd = diffAmount - (settings.amount - settings.amountMax);
+            } else {
+                amountToAdd = diffAmount;
+            }
+
+            for(let i = 0; i < amountToAdd; i++){
                 this._particles.push(this.createParticleWithCurrentSettings());
             }
         }

@@ -71,6 +71,8 @@ let settings = {
 
     // Handler settings (-1 = default)
     amount: -1, // number of particles
+    amountMin: -1, // min number of particles (useful if dynamicAmount is set to true)
+    amountMax: -1, // max number of particles (useful if dynamicAmount is set to true)
     dynamicAmount: -1, // if set to true (1), the particle amount changes proportionally with the new window size
     tolerance: -1, // distance from which lines will be drawn
     lineWidth: -1, // width of the lines between particles
@@ -116,6 +118,8 @@ Then, add it to the ParticleHandler constructor :
 :-----:|:-----:
 disableOnMobile|If set to true (1), the script is disabled for mobile users
 amount|The amount of particles
+amountMin|The min amount of particles (useful if dynamicAmount is set to true)
+amountMax|The max amount of particles (useful if dynamicAmount is set to true)
 dynamicAmount|If set to true (1), the particle amount changes proportionally with the new window size (if a resize event is caught) 
 tolerance|Distance from which lines between particles will be drawn (in pixels)
 lineWidth|Width of the lines between particles (in pixels)
