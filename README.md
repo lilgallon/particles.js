@@ -2,7 +2,6 @@
 ![tag](https://img.shields.io/github/tag/n3roo/particles.js.svg)
 ![opissues](https://img.shields.io/github/issues/n3roo/particles.js.svg)
 ![clissues](https://img.shields.io/github/issues-closed/n3roo/particles.js.svg)
-![downloads](https://img.shields.io/github/downloads/n3roo/particles.js/total.svg)
 ![license](https://img.shields.io/github/license/n3roo/particles.js.svg)
 
 An easy way to make your website sexy with particle backgrounds.
