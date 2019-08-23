@@ -97,7 +97,7 @@ let settings = {
 
     // Interaction settings (if the mouse goes in or out of the canvas)
     multiplierIn: -1, // multiplier if the mouse is in the canvas
-    multiplierOut: -1 // multiplier if the mouse is out of the canvas
+    multiplierOut: -1, // multiplier if the mouse is out of the canvas
 
     // Color of springs
     springColorR: -1, // spring color (RED) >=0 & <= 255
