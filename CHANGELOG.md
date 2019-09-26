@@ -60,3 +60,7 @@ particleHandler.settings = settings;
 - Add #19: Ability to set a min and a max amount of particles (useful when using dynamic amount)
 - Fix #20: Some methods needed to be private, now they are private following ECMA6
 - Decreased default amount of particles
+
+## Version 1.5 : ../09/19
+
+- Fix #23: Cos & sin were inverted in setSpeed and setDirection methods
