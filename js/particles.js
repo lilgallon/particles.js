@@ -704,8 +704,8 @@ class Particle{
     setSpeed(speed){
         // Set the speed
         const direction = this.getDirection();
-        this.vx = Math.cos(direction) * speed;
-        this.vy = Math.sin(direction) * speed;
+        this.vx = Math.sin(direction) * speed;
+        this.vy = Math.cos(direction) * speed;
     }
 
     /**
@@ -721,8 +721,8 @@ class Particle{
      */
     setDirection(direction){
         const speed = this.getSpeed();
-        this.vx = Math.cos(direction) * speed;
-        this.vy = Math.sin(direction) * speed;
+        this.vx = Math.sin(direction) * speed;
+        this.vy = Math.cos(direction) * speed;
     }
 
     /**
