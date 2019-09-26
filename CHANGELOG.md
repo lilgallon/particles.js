@@ -61,6 +61,9 @@ particleHandler.settings = settings;
 - Fix #20: Some methods needed to be private, now they are private following ECMA6
 - Decreased default amount of particles
 
-## Version 1.5 : ../09/19
+## Version 1.5 : 25/09/19
 
+- Enhancement #25: Added a security to prevent users from calling start() multiple times
 - Fix #23: Cos & sin were inverted in setSpeed and setDirection methods
+- Fix #24: Particles are not cut anymore when they bounce with an updated size
+- Fix #26: The canvas size is now adjusted correctly if an other unit than "px" is used to define its height and its width
