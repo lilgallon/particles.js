@@ -63,6 +63,8 @@ particleHandler.settings = settings;
 
 ## Version 1.5 : 25/09/19
 
+**This update is backward compatible**
+
 - Enhancement #25: Added a security to prevent users from calling start() multiple times
 - Fix #23: Cos & sin were inverted in setSpeed and setDirection methods
 - Fix #24: Particles are not cut anymore when they bounce with an updated size
