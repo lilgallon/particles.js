@@ -1,4 +1,4 @@
-![header](https://n3roo.github.io/img/particles-js.png)
+![header](https://nero.dev/resources/images/carousel/carousel_particles.png)
 ![tag](https://img.shields.io/github/tag/n3roo/particles.js.svg)
 ![opissues](https://img.shields.io/github/issues/n3roo/particles.js.svg)
 ![clissues](https://img.shields.io/github/issues-closed/n3roo/particles.js.svg)
